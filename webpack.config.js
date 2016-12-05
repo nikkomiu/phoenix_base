@@ -14,7 +14,7 @@ const base = {
       "./web/static/sass/app.scss",
       "./web/static/js/app.js"
     ],
-    vendor: ["jquery"]
+    vendor: ["jquery", "tether"]
   },
 
   output: {
