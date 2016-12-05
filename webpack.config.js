@@ -1,40 +1,72 @@
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
-  entry: [
-    "./web/static/sass/app.scss",
-    "./web/static/js/app.js"
-  ],
+var merge = require('webpack-merge');
+var webpack = require('webpack');
+var path = require('path');
+
+const env = process.env.NODE_ENV || 'development';
+
+const base = {
+  entry: {
+    app: [
+      "./web/static/sass/app.scss",
+      "./web/static/js/app.js"
+    ],
+    vendor: ["jquery"]
+  },
 
   output: {
     path: "./priv/static",
-    filename: "js/app.js"
+    filename: "assets/js/app.js"
   },
 
   resoluve: {
     moduleDirectories: ["node_modules", __dirname + "/web/static/js"]
-  }
+  },
 
   module: {
     loaders: [
       {
+        // Babel JS Loader
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules|bower_components)/,
         loader: "babel",
         query: {
           presets: ["es2015"]
         }
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style", "css")
+        // SASS Loader
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract(['css', 'sass'])
+      },
+      {
+        // Font Loader
+        test: /\.(otf|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+        loader: 'file?name=assets/fonts/[name].[ext]&publicPath=../../'
       }
     ]
   },
 
   plugins: [
-    new ExtractTextPlugin("css/app.css"),
-    new CopyWebpackPlugin([{ from: "./web/static/assets" }])
+    new CopyWebpackPlugin([
+      { from: './web/static/assets' },
+      { from: './web/static/vendor', to: './assets/vendor' }
+    ]),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'assets/js/vendor.js',
+      chunks: ['vendor']
+    }),
+    new ExtractTextPlugin("assets/css/app.css"),
+    new CleanWebpackPlugin(['priv/static'], {
+      root: __dirname,
+      verbose: false,
+      dry: false
+    })
   ]
 }
+
+module.exports = merge(base, require('./webpack.' + env + '.config'));
