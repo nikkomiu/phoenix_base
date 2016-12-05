@@ -1,0 +1,109 @@
+image: nikkoamiu/phoenix_framework:1.0
+
+variables:
+  POSTGRES_DB: my_wedding_test
+  POSTGRES_USER: my_wedding_svc
+  POSTGRES_PASSWORD: postgres
+  MIX_ENV: test
+
+stages:
+  - build
+  - test
+  - release
+  - verify
+  - push image
+  - deploy
+
+# COMPILE STAGE
+compile:
+  stage: build
+  script:
+    - make build
+    - make assets
+  artifacts:
+    untracked: true
+
+# TEST STAGE
+test:
+  stage: test
+  dependencies:
+    - compile
+  services:
+    - postgres:latest
+  script:
+    - mix test
+
+coverage:
+  stage: test
+  dependencies:
+    - compile
+  services:
+    - postgres:latest
+  script:
+    - mix coveralls
+
+migratability:
+  stage: test
+  dependencies:
+    - compile
+  services:
+    - postgres:latest
+  before_script:
+    - chmod +x deploy/db_migratable.sh
+  script:
+    - deploy/db_migratable.sh
+  except:
+    - tags
+  allow_failure: true
+
+mergability:
+  stage: test
+  image: debian:jessie
+  before_script:
+    - apt-get update && apt-get install -y git
+    - git config --global user.email "admin@nikkomiu.com"
+    - git config --global user.name "CI"
+  script:
+    - git checkout master
+    - git merge $CI_BUILD_REF
+  only:
+    - develop
+
+# RELEASE STAGE
+releasearaptor:
+  stage: release
+  script: MIX_ENV=prod make release
+  artifacts:
+    name: $CI_PROJECT_NAME
+    paths:
+      - rel/$CI_PROJECT_NAME/
+
+# PUSH IMAGE STAGE
+containerize:
+  stage: push image
+  image: docker:latest
+  dependencies:
+    - releasearaptor
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILD_REF_NAME .
+    - docker push registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$CI_BUILD_REF_NAME
+
+# DEPLOY STAGE
+deploy:
+  stage: deploy
+  dependencies:
+    - releasearaptor
+  before_script:
+    - apt-get update && apt-get install -y curl
+    - MIX_ENV=prod make build
+    - chmod +x deploy/setup.sh deploy/deploy.sh
+    - deploy/setup.sh # Output setup (it may have important messages)
+    - eval "$(deploy/setup.sh)"
+  script:
+    - MIX_ENV=prod mix ecto.migrate
+    - deploy/deploy.sh
+  only:
+    - tags
