@@ -21,6 +21,7 @@
       </main>
     </div>
 
+    <script src="<%= static_path(@conn, "/assets/js/vendor.js") %>"></script>
     <script src="<%= static_path(@conn, "/assets/js/app.js") %>"></script>
   </body>
 </html>

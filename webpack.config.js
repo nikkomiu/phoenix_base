@@ -69,4 +69,14 @@ const base = {
   ]
 }
 
-module.exports = merge(base, require('./webpack.' + env + '.config'));
+var envConfig = {};
+
+try {
+  envConfig = require('./webpack.' + env + '.config');
+}
+catch(e) {
+  console.log('Module "webpack.' + env + '.config.js" was not found.')
+  console.log('  Continuing without environment specific configuration...')
+}
+
+module.exports = merge(base, envConfig);
