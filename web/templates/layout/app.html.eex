@@ -16,8 +16,6 @@
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
-
-        <i class="fa fa-user"></i>
       </main>
     </div>
 
