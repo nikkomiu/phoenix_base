@@ -4,19 +4,22 @@
     <li class="nav-item">
       <%= link "About", to: page_path(@conn, :about), class: "nav-link" %>
     </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link">Third</a>
-    </li>
   </ul>
 
   <ul class="nav navbar-nav float-xs-right">
     <%= if is_user_signed_in?(@conn) do %>
     <li class="nav-item">
-      <%= link "Log Out", to: session_path(@conn, :delete), class: "nav-link" %>
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><%= current_user(@conn).name %></a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <%= link "Your profile", to: user_path(@conn, :show, current_user(@conn).id), class: "dropdown-item" %>
+        <div class="dropdown-divider"></div>
+        <%= link "Settings", to: account_path(@conn, :index), class: "dropdown-item" %>
+        <%= link "Sign out", to: session_path(@conn, :delete), class: "dropdown-item" %>
+      </div>
     </li>
     <% else %>
     <li class="nav-item">
-      <%= link "Log In", to: session_path(@conn, :new), class: "nav-link" %>
+      <%= link "Sign in", to: session_path(@conn, :new), class: "nav-link" %>
     </li>
     <% end %>
   </ul>

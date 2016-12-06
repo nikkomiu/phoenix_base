@@ -9,7 +9,7 @@ defmodule AwesomeApp.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :awesome_app, gzip: true,
-    only: ~w(assets favicon.ico robots.txt)
+    only: ~w(assets images favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

@@ -24,8 +24,20 @@ defmodule AwesomeApp.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
 
-    get "/auth/login", SessionController, :new
-    post "/auth/login", SessionController, :create
-    get "/auth/logout", SessionController, :delete
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    get "/logout", SessionController, :delete
+
+    get "/u", UserController, :index
+    get "/u/:id", UserController, :show
+
+    get "/settings", AccountController, :index
+    get "/settings/profile", AccountController, :profile
+    post "/settings/profile", AccountController, :update_profile
+    get "/settings/account", AccountController, :account
+    post "/settings/account", AccountController, :update_account
+    get "/settings/phones", AccountController, :phone
+    post "/settings/phones", AccountController, :add_phone
+    delete "/settings/phones/:id", AccountController, :delete_phone
   end
 end

@@ -6,11 +6,12 @@ defmodule AwesomeApp.Repo.Migrations.CreateUserPhone do
       add :number, :string
       add :description, :string
       add :is_primary, :boolean, default: false, null: false
-      add :user_id, references(:users, on_delete: :nothing)
+      add :user_id, references(:users, on_delete: :nothing), null: false
 
       timestamps()
     end
 
+    create unique_index(:user_phones, [:is_primary, :user_id])
     create unique_index(:user_phones, [:number])
     create index(:user_phones, [:user_id])
   end

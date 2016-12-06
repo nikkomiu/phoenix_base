@@ -1,8 +1,14 @@
+$brand-primary: #0275d8;
+$brand-primary-lighter: desaturate(lighten($brand-primary, 52%), 40%);
+
 $body-bg: #FBFBFB;
 
 $font-family-sans-serif: 'Source Sans Pro', sans-serif;
 
 $navbar-padding-y: 0.325rem;
+
+/* Forms */
+$input-bg-focus: $brand-primary-lighter;
 
 /* Alerts */
 $alert-border-radius: 0;

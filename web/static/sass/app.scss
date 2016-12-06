@@ -22,7 +22,11 @@ main[role=main] {
 .login-card {
   @extend .card;
 
-  max-width: 40rem;
+  max-width: 25rem;
   margin-left: auto;
   margin-right: auto;
+}
+
+.list-group-flush > .list-group-item {
+  border: 0px solid transparent;
 }

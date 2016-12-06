@@ -9,9 +9,15 @@ defmodule AwesomeApp.User do
     field :password, :string, virtual: true
     field :password_hash, :string
 
-    has_many :user_phones, AwesomeApp.UserPhone
+    has_many :phones, AwesomeApp.UserPhone
 
     timestamps()
+  end
+
+  def full_details_by_id(id) do
+    Repo.one from u in AwesomeApp.User,
+      where: u.id == ^id,
+      preload: [:phones]
   end
 
   def find_by_email(email) do

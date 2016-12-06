@@ -2,12 +2,14 @@ defmodule AwesomeApp.SessionController do
   use AwesomeApp.Web, :controller
 
   def new(conn, _params) do
+    # TODO: Don't show form if logged in
     changeset = AwesomeApp.User.session_changeset(%AwesomeApp.User{})
 
     render conn, "new.html"
   end
 
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
+    # TODO: Don't log in if logged in
     case AwesomeApp.User.find_and_confirm_password(email, password) do
       {true, user} ->
         conn
