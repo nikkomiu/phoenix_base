@@ -1,9 +1,35 @@
-$fa-font-path: "~font-awesome/fonts";
-
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+$fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
+
+$body-bg: #FBFBFB;
+
+$font-family-sans-serif: 'Source Sans Pro', sans-serif;
+
+$navbar-padding-y: 0.325rem;
+
+/* Alerts */
+$alert-border-radius: 0;
+$alert-border-width: 0;
+
+$alert-info-text: #FFF;
+$alert-info-bg: #57a1c5;
+
+$alert-danger-text: #FFF;
+$alert-danger-bg: #cc7d7b;
+
 @import "~bootstrap/scss/bootstrap";
 
-body {
-  font-family: 'Source Sans Pro', sans-serif;
+.turbolinks-progress-bar {
+  height: 2px;
+  background-color: #cc7d7b;
+}
+
+.alert {
+  margin-bottom: 0;
+}
+
+main[role=main] {
+  margin-top: 1rem;
 }

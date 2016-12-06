@@ -52,6 +52,7 @@ defmodule AwesomeApp.Web do
       import AwesomeApp.Router.Helpers
       import AwesomeApp.ErrorHelpers
       import AwesomeApp.Gettext
+      import AwesomeApp.ViewHelpers
     end
   end
 

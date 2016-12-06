@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Hello AwesomeApp!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/assets/css/app.css") %>">
+
+    <link rel="stylesheet" href="<%= static_path(@conn, "/assets/css/app.css") %>" data-turbolinks-track="reload">
+
+    <script src="<%= static_path(@conn, "/assets/js/vendor.js") %>" data-turbolinks-track="reload"></script>
+    <script src="<%= static_path(@conn, "/assets/js/app.js") %>" data-turbolinks-track="reload"></script>
   </head>
-
   <body>
-    <div class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <%= render AwesomeApp.SharedView, "_header.html", assigns %>
 
+    <div class="container">
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
     </div>
 
-    <script src="<%= static_path(@conn, "/assets/js/vendor.js") %>"></script>
-    <script src="<%= static_path(@conn, "/assets/js/app.js") %>"></script>
+    <%= render_existing(@view_module, "#{template_name(@view_template)}_js.html", assigns) %>
   </body>
 </html>
