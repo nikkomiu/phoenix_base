@@ -15,11 +15,9 @@
   <body>
     <%= render AwesomeApp.SharedView, "_header.html", assigns %>
 
-    <div class="container">
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-    </div>
+    <main class="container" role="main">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
 
     <%= render_existing(@view_module, "#{template_name(@view_template)}_js.html", assigns) %>
   </body>

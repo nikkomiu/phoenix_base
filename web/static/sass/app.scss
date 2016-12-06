@@ -18,3 +18,11 @@ $fa-font-path: "~font-awesome/fonts";
 main[role=main] {
   margin-top: 1rem;
 }
+
+.login-card {
+  @extend .card;
+
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}

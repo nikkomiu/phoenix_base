@@ -1,9 +1,10 @@
 defmodule AwesomeApp.PageController do
   use AwesomeApp.Web, :controller
 
+  plug Guardian.Plug.EnsureAuthenticated, [handler: AwesomeApp.SessionController] when action in [:about]
+
   def index(conn, _params) do
     conn
-    |> put_flash(:error, "Something really cool.")
     |> render("index.html")
   end
 

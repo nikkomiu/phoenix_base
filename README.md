@@ -41,10 +41,10 @@ Run the migrations.
 
 There are a handful of dependencies that are required to begin developing this application:
 
-- `elixir`: Language used by the backend.
-- `phoenix_framework`: Backend framework the app is built on.
+- `elixir-1.3.4`: Language used by the backend.
+- `phoenix_framework-1.2.0`: Backend framework the app is built on.
 - `inotify-tools`: Used for auto-reload to work properly in development mode. *(Optional)*
-- `nodejs`: Used for gathering dependencies and compiling assets for the client side.
+- `nodejs-lts`: Used for gathering dependencies and compiling assets for the client side.
 - `webpack`: Used for compiling assets for the client side.
 - `docker`: Required if you plan to build the Docker image for the application or want to use Postgres in a Docker container.
 - `postgres`: The database engine used for the application. (App won't start without it)
@@ -53,17 +53,18 @@ There are a handful of dependencies that are required to begin developing this a
 
 Use [the official guide](http://elixir-lang.org/install.html) to install Elixir for your environment.
 
-#### Phoenix Framework
-
-Use [the official guide](http://www.phoenixframework.org/docs/installation) to install Phoenix Framework.
-
-**For Debian-based systems**: You might have to install the Erlang ESL:
+**OS Package Manager Note**: Depending on your OS you may need to install the precompiled package to get the correct version of Elixir on your system.
+**Debian-based Systems Note**: You might have to install the Erlang ESL:
 
 ```bash
 wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb
 sudo apt-get update
 sudo apt-get install esl-erlang
 ```
+
+#### Phoenix Framework
+
+Use [the official guide](http://www.phoenixframework.org/docs/installation) to install Phoenix Framework.
 
 #### inotify-tools
 
