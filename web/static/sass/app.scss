@@ -27,6 +27,12 @@ main[role=main] {
   margin-right: auto;
 }
 
+.page-title {
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid lightgrey;
+}
+
 .list-group-flush > .list-group-item {
   border-width: 0;
   border-top-width: 1px;

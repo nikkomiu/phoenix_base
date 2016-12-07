@@ -14,11 +14,12 @@ alias AwesomeApp.Repo
 alias AwesomeApp.User
 alias AwesomeApp.UserPhone
 
-user = Repo.insert!(%User{
+user = Repo.insert!(User.registration_changeset(%User{}, %{
   name: "Nikko Miu",
-  email: "nikko.miu@nikkomiu.com",
-  password_hash: "$2b$12$EDYkiwzAD59vBIJ3HU59MOojQgEkLWXQ/KM89Tm5O67Sl3kS17qEm"
-})
+  username: "nikko.miu",
+  email: "nikkoamiu@gmail.com",
+  password: "Password1"
+}))
 
 Repo.insert!(%UserPhone{
   number: "1234567890",

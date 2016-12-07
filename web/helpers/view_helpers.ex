@@ -19,4 +19,12 @@ defmodule AwesomeApp.ViewHelpers do
   def template_name(template) do
     template |> String.split(".") |> List.first()
   end
+
+  def gravatar_url(conn) do
+    gravatar_url(conn, 200)
+  end
+
+  def gravatar_url(conn, size) do
+    "https://www.gravatar.com/avatar/#{current_user(conn).email_md5}?d=mm&s=#{size}"
+  end
 end

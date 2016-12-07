@@ -1,6 +1,31 @@
 <div class="row">
   <div class="col-sm-9 push-sm-3">
-    Begin Setting up Profile Settings Here...
+    <div class="card">
+      <h5 class="card-header">Profile Settings</h5>
+      <div class="card-block row">
+        <div class="col-sm-8">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Primary Email</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Bio</label>
+            <textarea class="form-control"></textarea>
+          </div>
+          <button class="btn btn-outline-primary float-xs-right">Update profile</button>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <img src="<%= gravatar_url(@conn, 350) %>" class="img-fluid rounded" />
+            <p class="text-xs-center"><i>(Image set by <a href="https://www.gravatar.com/">Gravatar</a>)</i></p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <%= render AwesomeApp.AccountSettingsView, "_sidebar.html", conn: @conn %>

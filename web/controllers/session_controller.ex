@@ -6,9 +6,9 @@ defmodule AwesomeApp.SessionController do
     render conn, "new.html"
   end
 
-  def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
+  def create(conn, %{"session" => %{"username" => username, "password" => password}}) do
     # TODO: Don't log in if logged in
-    case AwesomeApp.User.find_and_confirm_password(email, password) do
+    case AwesomeApp.User.find_and_confirm_password(username, password) do
       {true, user} ->
         conn
         |> Guardian.Plug.sign_in(user)
@@ -16,7 +16,7 @@ defmodule AwesomeApp.SessionController do
       {false, _} ->
         conn
         |> put_flash(:error, "Incorrect Email or Password.")
-        |> render("new.html", email: email)
+        |> render("new.html", username: username)
     end
   end
 
