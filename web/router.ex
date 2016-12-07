@@ -7,11 +7,13 @@ defmodule AwesomeApp.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
   end
 
   pipeline :browser_auth do
-    plug Guardian.Plug.VerifySession
-    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, handler: AwesomeApp.SessionController
   end
 
   pipeline :api do
@@ -19,25 +21,33 @@ defmodule AwesomeApp.Router do
   end
 
   scope "/", AwesomeApp do
-    pipe_through [:browser, :browser_auth]
+    pipe_through [:browser]
 
     get "/", PageController, :index
     get "/about", PageController, :about
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
+  end
+
+  scope "/", AwesomeApp do
+    pipe_through [:browser, :browser_auth]
+
     get "/logout", SessionController, :delete
 
     get "/u", UserController, :index
     get "/u/:id", UserController, :show
 
-    get "/settings", AccountController, :index
-    get "/settings/profile", AccountController, :profile
-    post "/settings/profile", AccountController, :update_profile
-    get "/settings/account", AccountController, :account
-    post "/settings/account", AccountController, :update_account
-    get "/settings/phones", AccountController, :phone
-    post "/settings/phones", AccountController, :add_phone
-    delete "/settings/phones/:id", AccountController, :delete_phone
+    get "/settings", AccountSettingsController, :index
+    get "/settings/profile", AccountSettingsController, :profile
+    post "/settings/profile", AccountSettingsController, :update_profile
+    get "/settings/account", AccountSettingsController, :account
+    post "/settings/account", AccountSettingsController, :update_account
+    get "/settings/emails", AccountSettingsController, :emails
+    post "/settings/emails", AccountSettingsController, :add_email
+    delete "/settings/emails/:id", AccountSettingsController, :delete_email
+    get "/settings/phones", AccountSettingsController, :phones
+    post "/settings/phones", AccountSettingsController, :add_phone
+    delete "/settings/phones/:id", AccountSettingsController, :delete_phone
   end
 end

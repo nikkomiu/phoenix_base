@@ -28,5 +28,10 @@ main[role=main] {
 }
 
 .list-group-flush > .list-group-item {
-  border: 0px solid transparent;
+  border-width: 0;
+  border-top-width: 1px;
+
+  &:first-child {
+    border-top-width: 0;
+  }
 }

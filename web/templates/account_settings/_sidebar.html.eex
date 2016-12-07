@@ -1,0 +1,13 @@
+<div class="col-sm-3 pull-sm-9">
+  <div class="card">
+    <div class="card-header">
+      Personal Settings
+    </div>
+    <div class="list-group list-group-flush">
+      <%= link "Profile", to: account_settings_path(@conn, :profile), class: "list-group-item list-group-item-action" %>
+      <%= link "Account", to: account_settings_path(@conn, :account), class: "list-group-item list-group-item-action" %>
+      <%= link "Emails", to: account_settings_path(@conn, :emails), class: "list-group-item list-group-item-action" %>
+      <%= link "Phones", to: account_settings_path(@conn, :phones), class: "list-group-item list-group-item-action" %>
+    </div>
+  </div>
+</div>

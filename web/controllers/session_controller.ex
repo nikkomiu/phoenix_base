@@ -3,8 +3,6 @@ defmodule AwesomeApp.SessionController do
 
   def new(conn, _params) do
     # TODO: Don't show form if logged in
-    changeset = AwesomeApp.User.session_changeset(%AwesomeApp.User{})
-
     render conn, "new.html"
   end
 
@@ -18,7 +16,7 @@ defmodule AwesomeApp.SessionController do
       {false, _} ->
         conn
         |> put_flash(:error, "Incorrect Email or Password.")
-        |> render "new.html", email: email
+        |> render("new.html", email: email)
     end
   end
 

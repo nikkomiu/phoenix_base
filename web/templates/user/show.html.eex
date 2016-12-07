@@ -1,17 +1,20 @@
-<div class="col-sm-3">
-  <img src="<%= static_path(@conn, "/images/default/user.jpg") %>" class="rounded" />
+<div class="col-md-3">
+  <img src="<%= static_path(@conn, "/images/default/user.jpg") %>" class="rounded img-thumbnail" />
   <h2><%= @user.name %></h2>
   <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
   <p>Joined on <%= format_date(@user.inserted_at, "%b %m, %Y", :strftime) %></p>
+  <%= if @user.id == current_user(@conn).id do %>
+    <%= link to: account_settings_path(@conn, :index), class: "btn btn-secondary btn-block" do %>
+      <i class="fa fa-pencil"></i>
+      Account Settings
+    <% end %>
+  <% end %>
 </div>
-<div class="col-sm-9">
-  <div class="row">
-    <a href="#" class="btn btn-success float-xs-right">Account Settings</a>
-  </div>
+<div class="col-md-9">
   <div class="card">
-    <h4 class="card-header">
+    <h5 class="card-header">
       Phone Number(s)
-    </h4>
+    </h5>
     <ul class="list-group list-group-flush">
       <%= for phone <- @user.phones do %>
         <li class="list-group-item">

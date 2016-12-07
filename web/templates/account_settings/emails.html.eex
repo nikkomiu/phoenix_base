@@ -1,0 +1,7 @@
+<div class="row">
+  <div class="col-sm-9 push-sm-3">
+    Begin Setting up Email Settings Here...
+  </div>
+
+  <%= render AwesomeApp.AccountSettingsView, "_sidebar.html", conn: @conn %>
+</div>
