@@ -6,12 +6,16 @@ defmodule AwesomeApp.User do
   schema "users" do
     field :name, :string
     field :username, :string
+    field :phone, :string
+    field :bio, :string
+
     field :email, :string
     field :email_md5, :string
+    field :email_token, :string
+    field :email_verified, :boolean
+
     field :password, :string, virtual: true
     field :password_hash, :string
-
-    field :bio, :string
 
     has_many :phones, AwesomeApp.UserPhone
 
@@ -50,6 +54,7 @@ defmodule AwesomeApp.User do
     |> validate_required([:name, :email, :username, :password])
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()
+    |> put_email_token()
     |> put_email_md5()
   end
 
@@ -57,6 +62,15 @@ defmodule AwesomeApp.User do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+      _ ->
+        changeset
+    end
+  end
+
+  defp put_email_token(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true} ->
+        put_change(changeset, :email_token, Ecto.UUID.bingenerate())
       _ ->
         changeset
     end
