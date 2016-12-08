@@ -20,10 +20,8 @@ defmodule AwesomeApp.Web do
     quote do
       use Ecto.Schema
 
-      alias AwesomeApp.Repo
       import Ecto
       import Ecto.Changeset
-      import Ecto.Query
 
       import AwesomeApp.ModelHelpers
     end
@@ -33,8 +31,12 @@ defmodule AwesomeApp.Web do
     quote do
       use Phoenix.Controller
 
+      alias AwesomeApp.Repo
+
+      import Ecto.Query
       import AwesomeApp.Router.Helpers
       import AwesomeApp.Gettext
+      import AwesomeApp.UserHelper
     end
   end
 
@@ -52,6 +54,7 @@ defmodule AwesomeApp.Web do
       import AwesomeApp.ErrorHelpers
       import AwesomeApp.Gettext
       import AwesomeApp.ViewHelpers
+      import AwesomeApp.UserHelper
     end
   end
 

@@ -1,5 +1,5 @@
 <div class="col-md-3">
-  <img src="<%= gravatar_url(@conn, 350) %>" class="rounded img-fluid" />
+  <img src="<%= gravatar_url(@conn, size: 350) %>" class="rounded img-fluid" />
   <h2><%= @user.name %></h2>
   <a href="mailto:<%= @user.email %>"><%= @user.email %></a>
   <p>Joined on <%= format_date(@user.inserted_at, "%b %m, %Y", :strftime) %></p>

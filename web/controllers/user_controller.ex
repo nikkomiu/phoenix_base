@@ -6,7 +6,10 @@ defmodule AwesomeApp.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = AwesomeApp.User.full_details_by_id(id)
+    user =
+      Repo.one from u in AwesomeApp.User,
+        where: u.id == ^id,
+        preload: [:phones]
 
     render conn, "show.html", user: user
   end

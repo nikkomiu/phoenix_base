@@ -1,26 +1,37 @@
 <div class="row">
-  <div class="col-sm-9 push-sm-3">
+  <div class="col-md-9 push-md-3">
     <div class="card">
       <h5 class="card-header">Profile Settings</h5>
+
       <div class="card-block row">
-        <div class="col-sm-8">
-          <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Primary Email</label>
-            <input type="text" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Bio</label>
-            <textarea class="form-control"></textarea>
-          </div>
+        <%= form_for @changeset, account_settings_path(@conn, :update_profile), [method: "POST", class: "col-sm-8"], fn (f) -> %>
+          <%= form_group f, :name do %>
+            <%= label f, :name, class: "form-control-label" %>
+            <%= text_input f, :name, class: "form-control" %>
+            <%= if message = f.errors[:name] do %>
+              <div class="form-control-feedback"><%= translate_error(message) %></div>
+            <% end %>
+          <% end %>
+
+          <%= form_group f, :email do %>
+            <%= label f, :email, class: "form-control-label" %>
+            <%= text_input f, :email, class: "form-control" %>
+            <%= if message = f.errors[:email] do %>
+              <div class="form-control-feedback"><%= translate_error(message) %></div>
+            <% end %>
+          <% end %>
+
+          <%= form_group f, :bio do %>
+            <%= label f, :bio, class: "form-control-label" %>
+            <%= textarea f, :bio, class: "form-control" %>
+          <% end %>
+
           <button class="btn btn-outline-primary float-xs-right">Update profile</button>
-        </div>
+          <div class="clearfix"></div>
+        <% end %>
         <div class="col-sm-4">
           <div class="form-group">
-            <img src="<%= gravatar_url(@conn, 350) %>" class="img-fluid rounded" />
+            <img src="<%= gravatar_url(@conn, size: 350) %>" class="img-fluid rounded" />
             <p class="text-xs-center"><i>(Image set by <a href="https://www.gravatar.com/">Gravatar</a>)</i></p>
           </div>
         </div>

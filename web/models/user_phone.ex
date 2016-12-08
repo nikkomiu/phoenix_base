@@ -5,19 +5,20 @@ defmodule AwesomeApp.UserPhone do
     field :number, :string
     field :description, :string
     field :is_primary, :boolean, default: false
-    
-    belongs_to :user, AwesomeApp.User
+
+    belongs_to :user, AwesomeApp.User, type: Ecto.UUID
 
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
+  def description_options() do
+    ["main", "home", "mobile", "work", "other"]
+  end
+
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:number, :is_primary])
     |> validate_required([:number, :is_primary])
-    |> unique_constraint(:number)
+    |> validate_inclusion(:description, description_options)
   end
 end

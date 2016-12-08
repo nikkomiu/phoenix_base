@@ -42,7 +42,9 @@ defmodule AwesomeApp.Router do
     get "/settings/profile", AccountSettingsController, :profile
     post "/settings/profile", AccountSettingsController, :update_profile
     get "/settings/account", AccountSettingsController, :account
-    post "/settings/account", AccountSettingsController, :update_account
+    post "/settings/account/password", AccountSettingsController, :update_password
+    post "/settings/account/username", AccountSettingsController, :update_username
+    delete "/settings/account", AccountSettingsController, :delete_account
     get "/settings/emails", AccountSettingsController, :emails
     post "/settings/emails", AccountSettingsController, :add_email
     delete "/settings/emails/:id", AccountSettingsController, :delete_email

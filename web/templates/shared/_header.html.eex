@@ -10,7 +10,7 @@
     <%= if is_user_signed_in?(@conn) do %>
     <li class="nav-item">
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        <img src="<%= gravatar_url(@conn, 24) %>" class="align-top d-inline-block rounded" />
+        <img src="<%= gravatar_url(@conn, size: 24) %>" class="align-top d-inline-block rounded" />
       </a>
       <div class="dropdown-menu dropdown-menu-right">
         <%= link "Your profile", to: user_path(@conn, :show, current_user(@conn).id), class: "dropdown-item" %>

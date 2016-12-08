@@ -3,16 +3,21 @@ defmodule AwesomeApp.UserTest do
 
   alias AwesomeApp.User
 
-  @valid_attrs %{name: "some content"}
+  @valid_registration_attrs %{
+    name: "Test User",
+    username: "test.user",
+    email: "test.user@nikkomiu.com",
+    password: "testPassword1"
+  }
   @invalid_attrs %{}
 
-  test "changeset with valid attributes" do
-    changeset = User.changeset(%User{}, @valid_attrs)
+  test "register with valid attributes" do
+    changeset = User.registration_changeset(%User{}, @valid_registration_attrs)
     assert changeset.valid?
   end
 
-  test "changeset with invalid attributes" do
-    changeset = User.changeset(%User{}, @invalid_attrs)
+  test "register with invalid attributes" do
+    changeset = User.registration_changeset(%User{}, @invalid_attrs)
     refute changeset.valid?
   end
 end

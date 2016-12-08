@@ -36,5 +36,6 @@ defmodule AwesomeApp.ErrorHelpers do
     else
       Gettext.dgettext(AwesomeApp.Gettext, "errors", msg, opts)
     end
+    |> String.capitalize()
   end
 end

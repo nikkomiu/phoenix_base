@@ -18,8 +18,9 @@ defmodule AwesomeApp.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {AwesomeApp, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :guardian, :timex]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
+                    :phoenix_ecto, :postgrex, :comeonin, :guardian, :timex,
+                    :gettext, :phoenix_slime, :bamboo, :httpotion]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,7 +41,11 @@ defmodule AwesomeApp.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 3.0"},
      {:guardian, "~> 0.13.0"},
-     {:timex, "~> 3.0"}]
+     {:timex, "~> 3.0"},
+     {:bamboo, "~> 0.7"},
+     {:bamboo_smtp, "~> 1.2.1"},
+     {:httpotion, "~>3.0.2"},
+     {:phoenix_slime, "~> 0.8.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

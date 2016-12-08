@@ -28,6 +28,10 @@ config :guardian, Guardian,
   secret_key: "UxzJ7n4P9/WGAGMIHcrQruQ8mABkf89Thg+2MdGBUCeeJ/YxRMuXRy0WrNp1aPgt",
   serializer: AwesomeApp.GuardianSerializer
 
+config :phoenix, :template_engines,
+  slim: PhoenixSlime.Engine,
+  slime: PhoenixSlime.Engine
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -1,12 +1,4 @@
 defmodule AwesomeApp.ViewHelpers do
-  def current_user(conn) do
-    Guardian.Plug.current_resource(conn)
-  end
-
-  def is_user_signed_in?(conn) do
-    current_user(conn) != nil
-  end
-
   def format_date(date, format_string, method) do
     case Timex.format(date, format_string, method) do
       {:ok, str} ->
@@ -20,11 +12,12 @@ defmodule AwesomeApp.ViewHelpers do
     template |> String.split(".") |> List.first()
   end
 
-  def gravatar_url(conn) do
-    gravatar_url(conn, 200)
-  end
+  def form_group(f, ele, [do: {:safe, do_content}]) do
+    err = if f.errors[ele] != nil, do: " has-danger"
 
-  def gravatar_url(conn, size) do
-    "https://www.gravatar.com/avatar/#{current_user(conn).email_md5}?d=mm&s=#{size}"
+    { :safe, "<div class=\"form-group#{err}\">#{do_content}</div>"}
   end
+#  <%= if message = f.errors[:email] do %>
+#    <div class="form-control-feedback"><%= translate_error(message) %></div>
+#  <% end %>
 end
