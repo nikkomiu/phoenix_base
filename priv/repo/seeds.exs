@@ -41,7 +41,7 @@ end
 {:ok, uid} = Ecto.UUID.cast("661f4979-d1cb-470e-993d-756119d12ebd")
 
 user = SeedHelpers.find_or_create(User, :username,
-  User.registration_changeset(%User{id: uid, locked: false}, %{
+  User.registration_changeset(%User{id: uid, confirmed_at: Ecto.DateTime.from_erl(:calendar.universal_time)}, %{
     name: "Nikko Miu",
     username: "nikko.miu",
     email: "nikkoamiu@gmail.com",

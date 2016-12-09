@@ -7,7 +7,8 @@ defmodule AwesomeApp.TestHelpers do
       username: "user_#{Base.encode16(:crypto.rand_bytes(8))}",
       email: "test.user@nikkomiu.com",
       password: "rightstuff",
-      locked: false
+      password_confirmation: "rightstuff",
+      confirmed_at: Ecto.DateTime.from_erl(:calendar.universal_time)
     }, attrs)
 
     %AwesomeApp.User{}

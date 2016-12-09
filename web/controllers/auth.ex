@@ -1,5 +1,4 @@
 defmodule AwesomeApp.Auth do
-
   alias AwesomeApp.Repo
 
   import Ecto.Query
@@ -11,7 +10,7 @@ defmodule AwesomeApp.Auth do
     |> case do
       {:ok, user} ->
         AwesomeApp.User.login_changeset(user, %{
-          number_of_logins: (user.number_of_logins + 1),
+          sign_in_count: (user.sign_in_count + 1),
           login_attempts: 0
         })
         {:ok, login(conn, user)}
@@ -35,12 +34,19 @@ defmodule AwesomeApp.Auth do
 
   def verify_access(user, password) do
     cond do
-      user && user.locked == true ->
+      # User is locked
+      user && user.locked_at != nil ->
         {:error, :locked}
-      user && checkpw(password, user.password_hash) ->
+      # User is unconfirmed
+      user && user.confirmed_at == nil ->
+        {:error, :unconfirmed}
+      # User has correct password
+      user && checkpw(password, user.encrypted_password) ->
         {:ok, user}
+      # User has incorrect password
       user ->
         {:error, :unauthorized}
+      # No User
       true ->
         dummy_checkpw()
         {:error, :not_found}
