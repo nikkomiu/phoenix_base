@@ -9,6 +9,14 @@ defmodule AwesomeApp.UserHelper do
 
   def gravatar_url(conn, opts \\ []) do
     opts = Keyword.merge([size: 200], opts) |> Enum.into(%{})
-    "https://www.gravatar.com/avatar/#{current_user(conn).email_md5}?d=mm&s=#{opts.size}"
+    "https://www.gravatar.com/avatar/#{current_user(conn).email |> md5_hash}?d=mm&s=#{opts.size}"
+  end
+
+  defp md5_hash(str) do
+    :crypto.hash(:md5, str)
+    |> :erlang.bitstring_to_list
+    |> Enum.map(&(:io_lib.format("~2.16.0b", [&1])))
+    |> List.flatten
+    |> :erlang.list_to_bitstring
   end
 end

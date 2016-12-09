@@ -6,11 +6,13 @@ defmodule AwesomeApp.TestHelpers do
       name: "Test User",
       username: "user_#{Base.encode16(:crypto.rand_bytes(8))}",
       email: "test.user@nikkomiu.com",
-      password: "rightstuff"
+      password: "rightstuff",
+      locked: false
     }, attrs)
 
     %AwesomeApp.User{}
     |> AwesomeApp.User.registration_changeset(changes)
+    |> AwesomeApp.User.locking_changeset(changes)
     |> Repo.insert!()
   end
 end

@@ -22,8 +22,6 @@ defmodule AwesomeApp.Web do
 
       import Ecto
       import Ecto.Changeset
-
-      import AwesomeApp.ModelHelpers
     end
   end
 

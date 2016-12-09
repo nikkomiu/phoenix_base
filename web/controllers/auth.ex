@@ -7,9 +7,13 @@ defmodule AwesomeApp.Auth do
 
   def login_by_username_and_password(conn, username, password) do
     find_by_email_or_username(username)
-    |> verify_password(password)
+    |> verify_access(password)
     |> case do
       {:ok, user} ->
+        AwesomeApp.User.login_changeset(user, %{
+          number_of_logins: (user.number_of_logins + 1),
+          login_attempts: 0
+        })
         {:ok, login(conn, user)}
       {:error, reason} ->
         {:error, reason, conn}
@@ -18,7 +22,7 @@ defmodule AwesomeApp.Auth do
 
   def update_password_for_user(user, old_pass, new_pass) do
     # Verify old_pass is correct
-    case verify_password(user, old_pass) do
+    case verify_access(user, old_pass) do
       {:ok, user} ->
         # Set new pass
         %AwesomeApp.User{}
@@ -29,8 +33,10 @@ defmodule AwesomeApp.Auth do
     end
   end
 
-  def verify_password(user, password) do
+  def verify_access(user, password) do
     cond do
+      user && user.locked == true ->
+        {:error, :locked}
       user && checkpw(password, user.password_hash) ->
         {:ok, user}
       user ->

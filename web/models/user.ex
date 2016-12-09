@@ -9,19 +9,31 @@ defmodule AwesomeApp.User do
     field :username, :string
     field :bio, :string
 
+    field :unverified_email, :string
     field :email, :string
-    field :email_md5, :string
     field :email_token, Ecto.UUID
     field :email_verified, :boolean
 
     field :password, :string, virtual: true
     field :password_hash, :string
 
-    field :verified, :boolean
+    field :login_attempts, :integer
+    field :locked, :boolean
+    field :number_of_logins, :integer
 
     has_many :phones, AwesomeApp.UserPhone
 
     timestamps()
+  end
+
+  def login_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:number_of_logins, :login_attempts])
+  end
+
+  def locking_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:locked, :email_verified])
   end
 
   def profile_changeset(user, params \\ %{}) do
@@ -29,7 +41,7 @@ defmodule AwesomeApp.User do
     |> cast(params, [:name, :email, :bio])
     |> validate_required([:name, :email])
     |> update_change(:email, &String.downcase/1)
-    |> update_email()
+    |> put_email_token()
   end
 
   def registration_changeset(user, params \\ %{}) do
@@ -50,12 +62,11 @@ defmodule AwesomeApp.User do
     end
   end
 
-  defp update_email(changeset) do
+  defp put_email_token(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{email: email}} ->
         changeset
         |> put_change(:email_token, Ecto.UUID.generate())
-        |> put_change(:email_md5, md5_hash(email))
         |> put_change(:email_verified, false)
       _ ->
         changeset
