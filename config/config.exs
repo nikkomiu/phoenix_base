@@ -17,6 +17,17 @@ config :awesome_app, AwesomeApp.Endpoint,
   pubsub: [name: AwesomeApp.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+# Configures the email service
+config :awesome_app, AwesomeApp.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: "smtp.mailgun.org",
+  port: 465,
+  username: "testing@sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org",
+  password: "password1",
+  tls: :if_available, # also :always or :never
+  ssl: true,
+  retries: 3
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

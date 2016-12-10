@@ -16,3 +16,7 @@
     <% end %>
   </div>
 </div>
+
+<div class="text-xs-center">
+  <%= link "I forgot my password", to: session_path(@conn, :forgot) %>
+</div>

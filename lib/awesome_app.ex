@@ -13,7 +13,7 @@ defmodule AwesomeApp do
       # Start the endpoint when the application starts
       supervisor(AwesomeApp.Endpoint, []),
       # Start your own worker by calling: AwesomeApp.Worker.start_link(arg1, arg2, arg3)
-      # worker(AwesomeApp.Worker, [arg1, arg2, arg3]),
+      worker(AwesomeApp.EmailWorker, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

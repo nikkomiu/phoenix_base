@@ -28,6 +28,11 @@ defmodule AwesomeApp.Router do
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
+
+    get "/login/forgot", SessionController, :forgot
+    post "/login/forgot", SessionController, :forgot
+    get "/login/confirm/:id", SessionController, :confirm_account
+    get "/login/unlock/:id", SessionController, :unlock_account
   end
 
   scope "/", AwesomeApp do

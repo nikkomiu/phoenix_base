@@ -5,18 +5,27 @@ defmodule AwesomeApp.Auth do
   import Comeonin.Bcrypt
 
   def login_by_username_and_password(conn, username, password) do
-    find_by_email_or_username(username)
+    query = from u in AwesomeApp.User,
+      where: u.email == ^username or u.username == ^username
+
+    Repo.one(query)
     |> verify_access(password)
+    |> update_login_metrics(conn)
     |> case do
       {:ok, user} ->
-        AwesomeApp.User.login_changeset(user, %{
-          sign_in_count: (user.sign_in_count + 1),
-          login_attempts: 0
-        })
-        {:ok, login(conn, user)}
+        {:ok, Guardian.Plug.sign_in(conn, user)}
       {:error, reason} ->
         {:error, reason, conn}
     end
+  end
+
+  def forgot_password(conn, email) do
+    query = from u in AwesomeApp.User,
+      where: u.email == ^email
+
+    # Send Email
+
+    # Update DB
   end
 
   def update_password_for_user(user, old_pass, new_pass) do
@@ -45,7 +54,7 @@ defmodule AwesomeApp.Auth do
         {:ok, user}
       # User has incorrect password
       user ->
-        {:error, :unauthorized}
+        {:error, :unauthorized, user}
       # No User
       true ->
         dummy_checkpw()
@@ -53,12 +62,63 @@ defmodule AwesomeApp.Auth do
     end
   end
 
-  defp login(conn, user) do
-    Guardian.Plug.sign_in(conn, user)
+  defp update_login_metrics(tuple, conn) do
+    case tuple do
+      {:ok, user} ->
+        AwesomeApp.User.login_changeset(user, %{
+          sign_in_count: (user.sign_in_count + 1),
+          failed_attempts: 0
+        }) |> Repo.update!
+
+        {:ok, user}
+      {:error, :unauthorized, user} ->
+        AwesomeApp.User.login_changeset(user, %{
+          failed_attempts: (user.failed_attempts + 1)
+        }) |> Repo.update!
+
+        # TODO: Send Unlock Email
+
+        {:error, :unauthorized}
+      _ ->
+        tuple
+    end
   end
 
-  defp find_by_email_or_username(field) do
-    Repo.one from u in AwesomeApp.User,
-      where: u.email == ^field or u.username == ^field
+  defp send_email_for_changeset(conn, changeset, user) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{reset_password_token: token}} ->
+        Task.async fn ->
+          AwesomeApp.Email.user_reset_password_email(conn, user.email, token)
+          |> AwesomeApp.Mailer.deliver_now
+
+          AwesomeApp.User.email_changeset(user, %{reset_password_sent_at: Ecto.DateTime.utc})
+          |> Repo.update!
+        end
+
+        {:ok, :email_scheduled}
+      %Ecto.Changeset{valid?: true, changes: %{unlock_token: token}} ->
+        Task.async fn ->
+          AwesomeApp.Email.user_reset_password_email(conn, user.email, token)
+          |> AwesomeApp.Mailer.deliver_now
+
+          # TODO: Add unlock_sent_at to DB
+          # AwesomeApp.User.email_changeset(user, %{unlock_sent_at: Ecto.DateTime.utc})
+          # |> Repo.update!
+        end
+
+        {:ok, :email_scheduled}
+      %Ecto.Changeset{valid?: true, changes: %{confirmation_token: token}} ->
+        Task.async fn ->
+          AwesomeApp.Email.user_reset_password_email(conn, user.email, token)
+          |> AwesomeApp.Mailer.deliver_now
+
+          AwesomeApp.User.email_changeset(user, %{confirmation_sent_at: Ecto.DateTime.utc})
+          |> Repo.update!
+        end
+
+        {:ok, :email_scheduled}
+      _ ->
+        {:error, :no_acton_nescessary}
+    end
   end
 end

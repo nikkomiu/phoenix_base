@@ -147,6 +147,8 @@ defmodule AwesomeApp.User do
           changeset
           |> put_change(:locked_at, Ecto.DateTime.utc)
           |> put_change(:unlock_token, Ecto.UUID.generate())
+        else
+          changeset
         end
       _ ->
         changeset

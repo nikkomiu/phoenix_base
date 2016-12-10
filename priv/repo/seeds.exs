@@ -17,7 +17,7 @@ alias AwesomeApp.UserPhone
 defmodule SeedHelpers do
   import Ecto.Query
 
-  def find_or_create(klass, field, %Ecto.Changeset{valid?: true} = changeset) do
+  def find_or_create(klass, field, %Ecto.Changeset{valid?: _} = changeset) do
     q =
       from x in klass,
         where: field(x, ^field) == ^Ecto.Changeset.get_change(changeset, field, nil)
@@ -45,7 +45,8 @@ user = SeedHelpers.find_or_create(User, :username,
     name: "Nikko Miu",
     username: "nikko.miu",
     email: "nikkoamiu@gmail.com",
-    password: "Password1"
+    password: "Password1",
+    password_confirmation: "Password1"
   })
 )
 
