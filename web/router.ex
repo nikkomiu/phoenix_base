@@ -28,11 +28,13 @@ defmodule AwesomeApp.Router do
 
     get "/login", SessionController, :new
     post "/login", SessionController, :create
-
     get "/login/forgot", SessionController, :forgot
     post "/login/forgot", SessionController, :forgot
-    get "/login/confirm/:id", SessionController, :confirm_account
-    get "/login/unlock/:id", SessionController, :unlock_account
+    get "/login/confirm/:id", SessionController, :confirm
+    get "/login/unlock/:id", SessionController, :unlock
+
+    get "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
   end
 
   scope "/", AwesomeApp do
@@ -41,7 +43,7 @@ defmodule AwesomeApp.Router do
     get "/logout", SessionController, :delete
 
     get "/u", UserController, :index
-    get "/u/:id", UserController, :show
+    get "/u/:username", UserController, :show
 
     get "/settings", AccountSettingsController, :index
     get "/settings/profile", AccountSettingsController, :profile
@@ -50,11 +52,5 @@ defmodule AwesomeApp.Router do
     post "/settings/account/password", AccountSettingsController, :update_password
     post "/settings/account/username", AccountSettingsController, :update_username
     delete "/settings/account", AccountSettingsController, :delete_account
-    get "/settings/emails", AccountSettingsController, :emails
-    post "/settings/emails", AccountSettingsController, :add_email
-    delete "/settings/emails/:id", AccountSettingsController, :delete_email
-    get "/settings/phones", AccountSettingsController, :phones
-    post "/settings/phones", AccountSettingsController, :add_phone
-    delete "/settings/phones/:id", AccountSettingsController, :delete_phone
   end
 end

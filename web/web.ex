@@ -16,6 +16,14 @@ defmodule AwesomeApp.Web do
   below.
   """
 
+  def model_store do
+    quote do
+      alias AwesomeApp.Repo
+
+      import Ecto.Query
+    end
+  end
+
   def model do
     quote do
       use Ecto.Schema
@@ -29,9 +37,6 @@ defmodule AwesomeApp.Web do
     quote do
       use Phoenix.Controller
 
-      alias AwesomeApp.Repo
-
-      import Ecto.Query
       import AwesomeApp.Router.Helpers
       import AwesomeApp.Gettext
       import AwesomeApp.UserHelper

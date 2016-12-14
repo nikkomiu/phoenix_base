@@ -1,146 +1,59 @@
 defmodule AwesomeApp.User do
   use AwesomeApp.Web, :model
 
-  @primary_key {:id, Ecto.UUID, autogenerate: true}
-  @derive {Phoenix.Param, key: :id}
-
-  @max_login_attempts 5
+  @derive {Phoenix.Param, key: :username}
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
-    field :encrypted_password, :string
-
     field :name, :string
+    field :email, :string
     field :username, :string
     field :bio, :string
-
-    field :reset_password_token, Ecto.UUID
-    field :reset_password_sent_at, Ecto.UUID
-
+    field :url, :string
+    field :company, :string
+    field :phone_number, :string
     field :sign_in_count, :integer
-
+    field :unverified_email, :string
+    field :verification_token, Ecto.UUID
+    field :verification_sent_at, Ecto.DateTime
     field :confirmation_token, Ecto.UUID
     field :confirmed_at, Ecto.DateTime
-    field :confirmation_sent_at, Ecto.DateTime
-    field :unconfirmed_email, :string
-
-    field :failed_attempts, :integer
-    field :unlock_token, :string
     field :locked_at, Ecto.DateTime
+    field :unlock_token, Ecto.UUID
+    field :failed_attempts, :integer
 
-    has_many :phones, AwesomeApp.UserPhone
+    has_one :user_login, AwesomeApp.UserLogin
+    has_many :user_identities, AwesomeApp.UserIdentity
 
     timestamps()
   end
 
-  def login_changeset(user, params \\ %{}) do
-    user
-    |> cast(params, [:sign_in_count, :failed_attempts])
-    |> should_account_get_locked
-  end
-
-  def locking_changeset(user, params \\ %{}) do
-    user
-    |> cast(params, [:locked_at, :confirmed_at])
-    |> confirm_email
-  end
-
-  def email_changeset(user, params \\ %{}) do
-    user
-    |> cast(params, [:confirmation_sent_at, :reset_password_sent_at])
-  end
-
   def profile_changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:name, :bio])
+    |> cast(params, [:name, :bio, :url, :company, :phone_number, :unverified_email])
     |> validate_required([:name])
-    |> update_change(:email, &String.downcase/1)
+  end
+
+  def login_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:failed_attempts, :sign_in_count])
+    |> validate_required([:failed_attempts])
+    |> should_lock_account()
   end
 
   def registration_changeset(user, params \\ %{}) do
     user
-    |> profile_changeset(params)
-    |> cast(params, [:email, :username, :password, :password_confirmation])
-    |> validate_required([:email, :username, :password, :password_confirmation])
-    |> validate_confirmation(:password)
-    |> validate_password_requirements
-    |> put_encrypted_password
-    |> put_confirmation_token
+    |> cast(params, [:name, :username, :email])
+    |> validate_required([:name, :username, :email])
+    |> validate_format(:username, ~r/^[a-zA-Z0-9\.\-\_]*$/)
   end
 
-  def update_registration_changeset(user, params \\ %{}) do
+  def verify_email_changeset(%AwesomeApp.User{unverified_email: new_email} = user) do
     user
-    |> cast(params, [:unconfirmed_email, :username, :password, :password_confirmation])
-    |> validate_username_requirements
-    |> validate_password_if_changed
-    |> put_encrypted_password
-    |> put_confirmation_token
+    |> put_change(:email, new_email)
+    |> put_change(:unverified_email, nil)
   end
 
-  defp validate_password_if_changed(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: _}} ->
-        changeset
-        |> validate_password_requirements
-        |> validate_confirmation(:password)
-      _ ->
-        changeset
-    end
-  end
-
-  defp validate_password_requirements(changeset) do
-    changeset
-    |> validate_length(:password, min: 6, max: 100)
-  end
-
-  defp validate_username_requirements(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{username: _}} ->
-        changeset
-        |> validate_format(:username, ~r/^[a-zA-Z0-9-_]*$/,
-            message: "can only contain alphanumeric characters, underscores, and hyphens")
-      _ ->
-        changeset
-    end
-  end
-
-  defp put_encrypted_password(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :encrypted_password, Comeonin.Bcrypt.hashpwsalt(pass))
-      _ ->
-        changeset
-    end
-  end
-
-  defp put_confirmation_token(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true, changes: %{email: email}} ->
-        changeset
-        |> put_change(:confirmation_token, Ecto.UUID.generate())
-      _ ->
-        changeset
-    end
-  end
-
-  defp confirm_email(changeset) do
-    case changeset do
-      # Confirm new account
-      %Ecto.Changeset{valid?: true, data: %{unconfirmed_email: nil}, changes: %{confirmed_at: _}} ->
-        changeset
-      # Confirm new email
-      %Ecto.Changeset{valid?: true, data: %{unconfirmed_email: u_email}, changes: %{confirmed_at: _}} ->
-        changeset
-        |> put_change(:email, u_email)
-        |> put_change(:unconfirmed_email, nil)
-      _ ->
-        changeset
-    end
-  end
-
-  defp should_account_get_locked(changeset) do
+  defp should_lock_account(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{failed_attempts: attempts}} ->
         if attempts >= @max_login_attempts do

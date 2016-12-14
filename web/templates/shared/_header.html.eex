@@ -13,7 +13,7 @@
         <img src="<%= gravatar_url(@conn, size: 24) %>" class="align-top d-inline-block rounded" />
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-        <%= link "Your profile", to: user_path(@conn, :show, current_user(@conn).id), class: "dropdown-item" %>
+        <%= link "Your profile", to: user_path(@conn, :show, current_user(@conn)), class: "dropdown-item" %>
         <div class="dropdown-divider"></div>
         <%= link "Settings", to: account_settings_path(@conn, :index), class: "dropdown-item" %>
         <%= link "Sign out", to: session_path(@conn, :delete), class: "dropdown-item" %>

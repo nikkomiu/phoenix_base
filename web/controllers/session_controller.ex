@@ -6,24 +6,24 @@ defmodule AwesomeApp.SessionController do
     render conn, "new.html"
   end
 
-  def create(conn, %{"session" => %{"username" => username, "password" => password}}) do
+  def create(conn, %{"session" => session_params}) do
     # TODO: Don't log in if logged in
-    case AwesomeApp.Auth.login_by_username_and_password(conn, username, password) do
+    case AwesomeApp.Auth.login_by_username_and_password(conn, session_params) do
       {:ok, conn} ->
         conn
         |> redirect(to: "/")
       {:error, :locked, conn} ->
         conn
         |> put_flash(:error, "Your account is locked. Check your email for unlock instructions or contact your administrator.")
-        |> render("new.html", username: username)
+        |> render("new.html", username: session_params.username)
       {:error, :unconfirmed, conn} ->
         conn
         |> put_flash(:error, "Your account is unconfirmed. Check your email for confirmation instructions.")
-        |> render("new.html", username: username)
+        |> render("new.html", username: session_params.username)
       {:error, _reason, conn} ->
         conn
         |> put_flash(:error, "Incorrect Email or Password.")
-        |> render("new.html", username: username)
+        |> render("new.html", username: session_params.username)
     end
   end
 

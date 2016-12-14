@@ -5,43 +5,35 @@ defmodule AwesomeApp.AccountSettingsController do
     conn |> redirect(to: account_settings_path(conn, :profile))
 
   def profile(conn, _params) do
-    changeset = AwesomeApp.User.profile_changeset(current_user(conn))
+    user = current_user(conn)
+    changeset = AwesomeApp.User.profile_changeset(user)
 
     conn
-    |> render("profile.html", changeset: changeset)
+    |> render("profile.html", user: user, changeset: changeset)
   end
 
   def update_profile(conn, %{"user" => user_params}) do
-    changeset =
-      AwesomeApp.User.profile_changeset(current_user(conn), user_params)
+    user = current_user(conn)
+    changeset = AwesomeApp.User.profile_changeset(user, user_params)
 
-    case Repo.update(changeset) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "Successfully updated profile.")
-        |> render("profile.html", changeset: changeset)
-      {:error, changeset} ->
-        conn
-        |> render("profile.html", changeset: changeset)
-    end
+    data =
+      case AwesomeApp.Repo.update(changeset) do
+        {:ok, u} ->
+          conn =
+            conn
+            |> put_flash(:info, "Successfully updated your profile.")
+
+          %{user: u, changeset: changeset}
+        {:error, c} ->
+          %{user: user, changeset: c}
+      end
+
+    conn
+    |> render("profile.html", data)
   end
 
   def account(conn, _params) do
     conn
     |> render("account.html")
-  end
-
-  def update_password(conn, %{"password" => user_params}) do
-
-  end
-
-  def emails(conn, _params) do
-    conn
-    |> render("emails.html")
-  end
-
-  def phones(conn, _params) do
-    conn
-    |> render("phones.html")
   end
 end

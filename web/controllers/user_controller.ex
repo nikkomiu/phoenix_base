@@ -5,11 +5,8 @@ defmodule AwesomeApp.UserController do
     render conn, "index.html"
   end
 
-  def show(conn, %{"id" => id}) do
-    user =
-      Repo.one from u in AwesomeApp.User,
-        where: u.id == ^id,
-        preload: [:phones]
+  def show(conn, %{"username" => username}) do
+    user = AwesomeApp.UserStore.find_by_username(username)
 
     render conn, "show.html", user: user
   end

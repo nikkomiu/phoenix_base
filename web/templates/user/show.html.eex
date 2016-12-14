@@ -11,27 +11,4 @@
   <% end %>
 </div>
 <div class="col-md-9">
-  <div class="card">
-    <h5 class="card-header">
-      Phone Number(s)
-    </h5>
-    <ul class="list-group list-group-flush">
-      <%= for phone <- @user.phones do %>
-        <li class="list-group-item">
-          <%= if phone.is_primary do %>
-            <span class="float-xs-right" style="color: gold;">
-              <i class="fa fa-lg fa-star"></i>
-            </span>
-          <% end %>
-
-          <h5 class="list-group-item-heading">
-            <%= phone.number %>
-          </h5>
-          <p class="list-group-item-text">
-            <%= phone.description %>
-          </p>
-        </li>
-      <% end %>
-    </ul>
-  </div>
 </div>

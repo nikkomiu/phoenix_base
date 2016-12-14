@@ -19,6 +19,28 @@
             <%= if message = f.errors[:email] do %>
               <div class="form-control-feedback"><%= translate_error(message) %></div>
             <% end %>
+            <%= if @user.unverified_email do %>
+              <div class="form-text text-muted">
+                <%= @user.unverified_email %> is waiting to be verified.
+                <a href="#">Resend instructions</a>.
+              </div>
+            <% end %>
+          <% end %>
+
+          <%= form_group f, :url do %>
+            <%= label f, :url, "URL", class: "form-control-label" %>
+            <%= text_input f, :url, class: "form-control" %>
+            <%= if message = f.errors[:url] do %>
+              <div class="form-control-feedback"><%= translate_error(message) %></div>
+            <% end %>
+          <% end %>
+
+          <%= form_group f, :company do %>
+            <%= label f, :company, class: "form-control-label" %>
+            <%= text_input f, :company, class: "form-control" %>
+            <%= if message = f.errors[:company] do %>
+              <div class="form-control-feedback"><%= translate_error(message) %></div>
+            <% end %>
           <% end %>
 
           <%= form_group f, :bio do %>

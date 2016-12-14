@@ -12,7 +12,7 @@
 
 alias AwesomeApp.Repo
 alias AwesomeApp.User
-alias AwesomeApp.UserPhone
+alias AwesomeApp.UserLogin
 
 defmodule SeedHelpers do
   import Ecto.Query
@@ -38,23 +38,18 @@ defmodule SeedHelpers do
   end
 end
 
-{:ok, uid} = Ecto.UUID.cast("661f4979-d1cb-470e-993d-756119d12ebd")
-
 user = SeedHelpers.find_or_create(User, :username,
-  User.registration_changeset(%User{id: uid, confirmed_at: Ecto.DateTime.from_erl(:calendar.universal_time)}, %{
+  User.registration_changeset(%User{}, %{
     name: "Nikko Miu",
-    username: "nikko.miu",
     email: "nikkoamiu@gmail.com",
-    password: "Password1",
-    password_confirmation: "Password1"
+    username: "nikko.miu"
   })
 )
 
-SeedHelpers.find_or_create(UserPhone, :number,
-  %UserPhone{
-    number: "1234567890",
-    description: "mobile",
-    is_primary: true,
+SeedHelpers.find_or_create(UserLogin, :user_id,
+  UserLogin.registration_changeset(%UserLogin{}, %{
+    password: "Password1",
+    password_confirmation: "Password1",
     user_id: user.id
-  }
+  })
 )

@@ -18,5 +18,6 @@
 </div>
 
 <div class="text-xs-center">
-  <%= link "I forgot my password", to: session_path(@conn, :forgot) %>
+  <%= link "I forgot my password", to: session_path(@conn, :forgot), class: "btn btn-link" %>
+  <%= link "Register for an account", to: registration_path(@conn, :new), class: "btn btn-link" %>
 </div>
