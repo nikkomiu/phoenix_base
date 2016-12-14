@@ -7,7 +7,7 @@
   </ul>
 
   <ul class="nav navbar-nav float-xs-right">
-    <%= if is_user_signed_in?(@conn) do %>
+    <%= if user_signed_in?(@conn) do %>
     <li class="nav-item">
       <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         <img src="<%= gravatar_url(@conn, size: 24) %>" class="align-top d-inline-block rounded" />

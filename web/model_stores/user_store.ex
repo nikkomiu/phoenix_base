@@ -3,9 +3,9 @@ defmodule AwesomeApp.UserStore do
 
   alias AwesomeApp.User
 
-  def find_by_id(id) do
+  def find_by_email(email) do
     Repo.one(from u in User,
-      where: u.id == ^id)
+      where: u.email == ^email)
   end
 
   def find_by_username(username) do

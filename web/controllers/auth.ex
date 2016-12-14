@@ -13,6 +13,11 @@ defmodule AwesomeApp.Auth do
     end
   end
 
+  def forgot_password(email) do
+    AwesomeApp.UserStore.find_by_email(email)
+    # TODO: Send Forgot Password Email
+  end
+
   defp update_login_metrics(tuple) do
     case tuple do
       {:ok, user} ->
@@ -23,7 +28,7 @@ defmodule AwesomeApp.Auth do
 
         {:ok, user}
       {:error, :unauthorized, user} ->
-        changeset = AwesomeApp.login_changeset(user, %{
+        changeset = AwesomeApp.User.login_changeset(user, %{
           failed_attempts: (user.failed_attempts + 1)
         })
 
@@ -31,6 +36,7 @@ defmodule AwesomeApp.Auth do
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->
+            # TODO: Send Locked Out Email
             {:error, :locked}
           _ ->
             {:error, :unauthorized}

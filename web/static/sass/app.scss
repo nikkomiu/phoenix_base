@@ -41,3 +41,14 @@ main[role=main] {
     border-top-width: 0;
   }
 }
+
+.modal-danger {
+  .modal-content {
+    border-color: #d9534f;
+  }
+
+  .modal-header {
+    background-color: #d9534f;
+    color: white;
+  }
+}

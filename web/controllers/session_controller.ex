@@ -40,8 +40,9 @@ defmodule AwesomeApp.SessionController do
   end
 
   def forgot(%{method: "POST"} = conn, %{"session" => %{"email" => email}}) do
+    AwesomeApp.Auth.forgot_password(email)
+
     conn
-    |> AwesomeApp.Auth.forgot_password(email)
     |> put_flash(:info, "Password reset instructions have been sent to you.")
     |> render("forgot.html")
   end
@@ -50,5 +51,11 @@ defmodule AwesomeApp.SessionController do
     conn
     |> put_flash(:error, "You need to sign in to do that.")
     |> redirect(to: session_path(conn, :new))
+  end
+
+  def already_authenticated(conn, _params) do
+    conn
+    |> put_flash(:info, "You are already logged in.")
+    |> redirect(to: "/")
   end
 end

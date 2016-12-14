@@ -16,6 +16,10 @@ defmodule AwesomeApp.Router do
     plug Guardian.Plug.EnsureAuthenticated, handler: AwesomeApp.SessionController
   end
 
+  pipeline :browser_no_auth do
+    plug Guardian.Plug.EnsureNotAuthenticated, handler: AwesomeApp.SessionController
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -26,17 +30,25 @@ defmodule AwesomeApp.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
 
-    get "/login", SessionController, :new
-    post "/login", SessionController, :create
     get "/login/forgot", SessionController, :forgot
     post "/login/forgot", SessionController, :forgot
-    get "/login/confirm/:id", SessionController, :confirm
     get "/login/unlock/:id", SessionController, :unlock
+    get "/login/verify/:id", SessionController, :verify
+    get "/login/confirm/:id", SessionController, :confirm
+  end
+
+  # Unauthenticated
+  scope "/", AwesomeApp do
+    pipe_through [:browser, :browser_no_auth]
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
 
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
   end
 
+  # Authenticated
   scope "/", AwesomeApp do
     pipe_through [:browser, :browser_auth]
 

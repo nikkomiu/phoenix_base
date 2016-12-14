@@ -3,7 +3,7 @@ defmodule AwesomeApp.UserHelper do
     Guardian.Plug.current_resource(conn)
   end
 
-  def is_user_signed_in?(conn) do
+  def user_signed_in?(conn) do
     current_user(conn) != nil
   end
 

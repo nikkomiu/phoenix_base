@@ -37,6 +37,15 @@ Run the migrations.
 
 ## Development
 
+### Environment Variables
+
+| Variable | Default |
+| -------- | ------- |
+| `SECRET_KEY_BASE` | `nil` |
+| `DATABASE_URL` | `nil` |
+| `POOL_SIZE` | `15` |
+| `PORT` | `nil` |
+
 ### Dependencies
 
 There are a handful of dependencies that are required to begin developing this application:

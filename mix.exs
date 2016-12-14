@@ -20,7 +20,7 @@ defmodule AwesomeApp.Mixfile do
     [mod: {AwesomeApp, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :comeonin, :guardian, :timex,
-                    :gettext, :phoenix_slime, :bamboo, :httpotion]]
+                    :gettext, :phoenix_slime, :bamboo, :bamboo_smtp, :httpotion]]
   end
 
   # Specifies which paths to compile per environment.
@@ -46,6 +46,7 @@ defmodule AwesomeApp.Mixfile do
      {:bamboo_smtp, "~> 1.2.1"},
      {:httpotion, "~>3.0.2"},
      {:phoenix_slime, "~> 0.8.0"},
+     {:distillery, "~> 1.0"},
      {:inch_ex, "~> 0.5", only: [:dev, :test]},     # Improve docs
      {:credo, "~> 0.5", only: [:dev, :test]},       # Static code analysis
      {:excoveralls, "~> 0.5", only: [:dev, :test]}] # Test coverage
