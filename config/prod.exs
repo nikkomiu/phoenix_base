@@ -4,7 +4,7 @@ config :awesome_app, AwesomeApp.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [scheme: "http", host: "localhost", port: 8080],
 #  force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  secret_key_base: {:system, "SECRET_KEY_BASE"},
+  secret_key_base: "${SECRET_KEY_BASE}",
   cache_static_manifest: "priv/static/manifest.json"
 
 config :awesome_app, AwesomeApp.Repo,
@@ -16,7 +16,7 @@ config :awesome_app, AwesomeApp.Repo,
 config :logger, level: :info
 
 config :guardian, Guardian,
-  secret_key: {:system, "SECRET_KEY_BASE"}
+  secret_key: "${SECRET_KEY_BASE}"
 
 config :phoenix, :serve_endpoints, true
 

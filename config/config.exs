@@ -45,7 +45,8 @@ config :phoenix, :template_engines,
 
 config :distillery,
   no_warn_missing: [
-    :elixir_make
+    :elixir_make,
+    :distillery
   ]
 
 # Import environment specific config. This must remain at the bottom
