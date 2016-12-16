@@ -46,7 +46,8 @@ defmodule AwesomeApp.Mixfile do
      {:bamboo_smtp, "~> 1.2.1"},
      {:httpotion, "~>3.0.2"},
      {:phoenix_slime, "~> 0.8.0"},
-     {:distillery, "~> 1.0"},
+     {:exq, "~> 0.8"},
+     {:distillery, "~> 1.0"},                       # Release Management
      {:inch_ex, "~> 0.5", only: [:dev, :test]},     # Improve docs
      {:credo, "~> 0.5", only: [:dev, :test]},       # Static code analysis
      {:excoveralls, "~> 0.5", only: [:dev, :test]}] # Test coverage

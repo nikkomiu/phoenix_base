@@ -43,6 +43,15 @@ config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,
   slime: PhoenixSlime.Engine
 
+config :exq,
+  name: Exq,
+  host: "localhost",
+  port: 6379,
+  namespace: "exq",
+  concurrency: :infinite,
+  queues: ["default", "email"],
+  max_retries: 25
+
 config :distillery,
   no_warn_missing: [
     :elixir_make,
