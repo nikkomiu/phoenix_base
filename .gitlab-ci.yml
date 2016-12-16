@@ -20,6 +20,7 @@ compile:
   script:
     - mix deps.get --only test
     - mix compile
+    - npm install
     - npm run deploy
   artifacts:
     untracked: true
