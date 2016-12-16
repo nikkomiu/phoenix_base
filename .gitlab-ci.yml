@@ -92,6 +92,7 @@ releasearaptor:
   before_script:
     - MIX_ENV=prod
   script:
+    - npm install
     - npm run deploy
     - mix deps.get --only prod
     - mix compile
