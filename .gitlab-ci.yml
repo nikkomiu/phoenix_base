@@ -20,7 +20,7 @@ compile:
   script:
     - mix deps.get --only test
     - mix compile
-    - make assets
+    - npm run deploy
   artifacts:
     untracked: true
 
@@ -91,7 +91,7 @@ releasearaptor:
   before_script:
     - MIX_ENV=prod
   script:
-    - make assets
+    - npm run deploy
     - mix deps.get --only prod
     - mix compile
     - mix release --env=prod

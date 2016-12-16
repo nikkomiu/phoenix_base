@@ -2,7 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "NODE_ENV=production webpack -p",
+    "deploy": "NODE_ENV=production webpack -p && mix phoenix.digest",
     "watch": "webpack --watch --progress --color"
   },
   "dependencies": {
