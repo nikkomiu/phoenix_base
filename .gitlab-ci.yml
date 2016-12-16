@@ -2,7 +2,7 @@ image: nikkoamiu/phoenix_framework:1.0
 
 variables:
   POSTGRES_DB: phoenix_base_test
-  POSTGRES_USER: phoenix_base_svc
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   MIX_ENV: test
 
