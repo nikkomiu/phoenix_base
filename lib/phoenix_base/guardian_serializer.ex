@@ -1,8 +1,8 @@
-defmodule AwesomeApp.GuardianSerializer do
+defmodule PhoenixBase.GuardianSerializer do
   @behaviour Guardian.Serializer
 
-  alias AwesomeApp.Repo
-  alias AwesomeApp.User
+  alias PhoenixBase.Repo
+  alias PhoenixBase.User
 
   def for_token(user = %User{}), do: { :ok, "User:#{user.id}" }
   def for_token(_), do: { :error, "Unknown resource type" }

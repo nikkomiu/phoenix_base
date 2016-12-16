@@ -1,5 +1,5 @@
-defmodule AwesomeApp.Router do
-  use AwesomeApp.Web, :router
+defmodule PhoenixBase.Router do
+  use PhoenixBase.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,18 +13,18 @@ defmodule AwesomeApp.Router do
   end
 
   pipeline :browser_auth do
-    plug Guardian.Plug.EnsureAuthenticated, handler: AwesomeApp.SessionController
+    plug Guardian.Plug.EnsureAuthenticated, handler: PhoenixBase.SessionController
   end
 
   pipeline :browser_no_auth do
-    plug Guardian.Plug.EnsureNotAuthenticated, handler: AwesomeApp.SessionController
+    plug Guardian.Plug.EnsureNotAuthenticated, handler: PhoenixBase.SessionController
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", AwesomeApp do
+  scope "/", PhoenixBase do
     pipe_through [:browser]
 
     get "/", PageController, :index
@@ -38,7 +38,7 @@ defmodule AwesomeApp.Router do
   end
 
   # Unauthenticated
-  scope "/", AwesomeApp do
+  scope "/", PhoenixBase do
     pipe_through [:browser, :browser_no_auth]
 
     get "/login", SessionController, :new
@@ -49,7 +49,7 @@ defmodule AwesomeApp.Router do
   end
 
   # Authenticated
-  scope "/", AwesomeApp do
+  scope "/", PhoenixBase do
     pipe_through [:browser, :browser_auth]
 
     get "/logout", SessionController, :delete

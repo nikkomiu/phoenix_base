@@ -1,4 +1,4 @@
-defmodule AwesomeApp.ModelCase do
+defmodule PhoenixBase.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,20 +16,20 @@ defmodule AwesomeApp.ModelCase do
 
   using do
     quote do
-      alias AwesomeApp.Repo
+      alias PhoenixBase.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import AwesomeApp.ModelCase
+      import PhoenixBase.ModelCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(AwesomeApp.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixBase.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(AwesomeApp.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixBase.Repo, {:shared, self()})
     end
 
     :ok
@@ -59,7 +59,7 @@ defmodule AwesomeApp.ModelCase do
   """
   def errors_on(struct, data) do
     struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&AwesomeApp.ErrorHelpers.translate_error/1)
+    |> Ecto.Changeset.traverse_errors(&PhoenixBase.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end

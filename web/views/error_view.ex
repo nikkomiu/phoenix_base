@@ -1,5 +1,5 @@
-defmodule AwesomeApp.ErrorView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.ErrorView do
+  use PhoenixBase.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"

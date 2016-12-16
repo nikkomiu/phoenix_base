@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :awesome_app, AwesomeApp.Endpoint,
+config :phoenix_base, PhoenixBase.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -14,7 +14,7 @@ config :awesome_app, AwesomeApp.Endpoint,
   watchers: [npm: ["run", "watch"]]
 
 # Watch static and templates for browser reloading.
-config :awesome_app, AwesomeApp.Endpoint,
+config :phoenix_base, PhoenixBase.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
@@ -32,10 +32,10 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :awesome_app, AwesomeApp.Repo,
+config :phoenix_base, PhoenixBase.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "awesome_app_dev",
+  database: "phoenix_base_dev",
   hostname: "localhost",
   pool_size: 10

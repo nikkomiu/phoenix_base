@@ -2,4 +2,4 @@ Hello!
 
 <%= render @view_module, @view_template, assigns %>
 
-- The Awesome App Team.
+- The Phoenix Base Team.

@@ -1,8 +1,8 @@
-defmodule AwesomeApp.Auth do
+defmodule PhoenixBase.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   def login_by_username_and_password(conn, %{"username" => username, "password" => pass}) do
-    AwesomeApp.UserStore.find_by_username_or_email(username)
+    PhoenixBase.UserStore.find_by_username_or_email(username)
     |> verify_access(pass)
     |> update_login_metrics
     |> case do
@@ -14,25 +14,25 @@ defmodule AwesomeApp.Auth do
   end
 
   def forgot_password(email) do
-    AwesomeApp.UserStore.find_by_email(email)
+    PhoenixBase.UserStore.find_by_email(email)
     # TODO: Send Forgot Password Email
   end
 
   defp update_login_metrics(tuple) do
     case tuple do
       {:ok, user} ->
-        AwesomeApp.User.login_changeset(user, %{
+        PhoenixBase.User.login_changeset(user, %{
           sign_in_count: (user.sign_in_count + 1),
           failed_attempts: 0
-        }) |> AwesomeApp.Repo.update!
+        }) |> PhoenixBase.Repo.update!
 
         {:ok, user}
       {:error, :unauthorized, user} ->
-        changeset = AwesomeApp.User.login_changeset(user, %{
+        changeset = PhoenixBase.User.login_changeset(user, %{
           failed_attempts: (user.failed_attempts + 1)
         })
 
-        changeset |> AwesomeApp.Repo.update!
+        changeset |> PhoenixBase.Repo.update!
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->

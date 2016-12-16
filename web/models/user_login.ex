@@ -1,5 +1,5 @@
-defmodule AwesomeApp.UserLogin do
-  use AwesomeApp.Web, :model
+defmodule PhoenixBase.UserLogin do
+  use PhoenixBase.Web, :model
 
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
@@ -12,7 +12,7 @@ defmodule AwesomeApp.UserLogin do
     field :reset_sent, Ecto.DateTime
     field :reset_token, Ecto.UUID
 
-    belongs_to :user, AwesomeApp.User
+    belongs_to :user, PhoenixBase.User
 
     timestamps()
   end

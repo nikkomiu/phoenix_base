@@ -1,3 +1,3 @@
-defmodule AwesomeApp.SharedView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.SharedView do
+  use PhoenixBase.Web, :view
 end

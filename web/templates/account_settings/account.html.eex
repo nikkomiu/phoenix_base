@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <%= render AwesomeApp.AccountSettingsView, "_sidebar.html", conn: @conn %>
+  <%= render PhoenixBase.AccountSettingsView, "_sidebar.html", conn: @conn %>
 </div>
 
 <div class="modal modal-danger fade delete-account-modal" role="dialog">

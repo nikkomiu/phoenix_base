@@ -1,4 +1,4 @@
-defmodule AwesomeApp.Repo.Migrations.CreateUser do
+defmodule PhoenixBase.Repo.Migrations.CreateUser do
   use Ecto.Migration
 
   def change do

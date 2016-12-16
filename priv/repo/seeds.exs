@@ -5,14 +5,14 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     AwesomeApp.Repo.insert!(%AwesomeApp.SomeModel{})
+#     PhoenixBase.Repo.insert!(%PhoenixBase.SomeModel{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias AwesomeApp.Repo
-alias AwesomeApp.User
-alias AwesomeApp.UserLogin
+alias PhoenixBase.Repo
+alias PhoenixBase.User
+alias PhoenixBase.UserLogin
 
 defmodule SeedHelpers do
   import Ecto.Query

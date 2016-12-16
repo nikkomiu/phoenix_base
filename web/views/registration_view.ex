@@ -1,3 +1,3 @@
-defmodule AwesomeApp.RegistrationView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.RegistrationView do
+  use PhoenixBase.Web, :view
 end

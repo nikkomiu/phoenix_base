@@ -1,14 +1,14 @@
-defmodule AwesomeApp.Endpoint do
-  use Phoenix.Endpoint, otp_app: :awesome_app
+defmodule PhoenixBase.Endpoint do
+  use Phoenix.Endpoint, otp_app: :phoenix_base
 
-  socket "/socket", AwesomeApp.UserSocket
+  socket "/socket", PhoenixBase.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :awesome_app, gzip: true,
+    at: "/", from: :phoenix_base, gzip: true,
     only: ~w(assets images favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
@@ -40,13 +40,13 @@ defmodule AwesomeApp.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_awesome_app_key",
+    key: "_phoenix_base_key",
     signing_salt: "/kWZJ4XT"
 
-  plug AwesomeApp.Router
+  plug PhoenixBase.Router
 
   defp config_or_default(key, default) do
-    case Application.fetch_env(:awesome_app, key) do
+    case Application.fetch_env(:phoenix_base, key) do
       :error ->
         default
       {:ok, data} ->

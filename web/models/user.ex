@@ -1,5 +1,5 @@
-defmodule AwesomeApp.User do
-  use AwesomeApp.Web, :model
+defmodule PhoenixBase.User do
+  use PhoenixBase.Web, :model
 
   @derive {Phoenix.Param, key: :username}
 
@@ -23,8 +23,8 @@ defmodule AwesomeApp.User do
     field :unlock_token, Ecto.UUID
     field :failed_attempts, :integer
 
-    has_one :user_login, AwesomeApp.UserLogin
-    has_many :user_identities, AwesomeApp.UserIdentity
+    has_one :user_login, PhoenixBase.UserLogin
+    has_many :user_identities, PhoenixBase.UserIdentity
 
     timestamps()
   end
@@ -49,7 +49,7 @@ defmodule AwesomeApp.User do
     |> validate_format(:username, ~r/^[a-zA-Z0-9\.\-\_]*$/)
   end
 
-  def verify_email_changeset(%AwesomeApp.User{unverified_email: new_email} = user) do
+  def verify_email_changeset(%PhoenixBase.User{unverified_email: new_email} = user) do
     user
     |> put_change(:email, new_email)
     |> put_change(:unverified_email, nil)

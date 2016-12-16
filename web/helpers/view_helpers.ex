@@ -1,4 +1,4 @@
-defmodule AwesomeApp.ViewHelpers do
+defmodule PhoenixBase.ViewHelpers do
   def format_date(date, format_string, method) do
     case Timex.format(date, format_string, method) do
       {:ok, str} ->

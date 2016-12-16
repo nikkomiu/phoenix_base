@@ -1,4 +1,4 @@
-# Awesome App
+# Phoenix Base
 
 ## Installation
 

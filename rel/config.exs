@@ -30,6 +30,6 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :awesome_app do
-  set version: current_version(:awesome_app)
+release :phoenix_base do
+  set version: current_version(:phoenix_base)
 end

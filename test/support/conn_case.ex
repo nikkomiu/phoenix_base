@@ -1,4 +1,4 @@
-defmodule AwesomeApp.ConnCase do
+defmodule PhoenixBase.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,23 +20,23 @@ defmodule AwesomeApp.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias AwesomeApp.Repo
+      alias PhoenixBase.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import AwesomeApp.Router.Helpers
+      import PhoenixBase.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint AwesomeApp.Endpoint
+      @endpoint PhoenixBase.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(AwesomeApp.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixBase.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(AwesomeApp.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixBase.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

@@ -61,5 +61,5 @@
     </div>
   </div>
 
-  <%= render AwesomeApp.AccountSettingsView, "_sidebar.html", conn: @conn %>
+  <%= render PhoenixBase.AccountSettingsView, "_sidebar.html", conn: @conn %>
 </div>

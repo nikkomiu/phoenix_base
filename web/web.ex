@@ -1,12 +1,12 @@
-defmodule AwesomeApp.Web do
+defmodule PhoenixBase.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use AwesomeApp.Web, :controller
-      use AwesomeApp.Web, :view
+      use PhoenixBase.Web, :controller
+      use PhoenixBase.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -18,7 +18,7 @@ defmodule AwesomeApp.Web do
 
   def model_store do
     quote do
-      alias AwesomeApp.Repo
+      alias PhoenixBase.Repo
 
       import Ecto.Query
     end
@@ -37,9 +37,9 @@ defmodule AwesomeApp.Web do
     quote do
       use Phoenix.Controller
 
-      import AwesomeApp.Router.Helpers
-      import AwesomeApp.Gettext
-      import AwesomeApp.UserHelper
+      import PhoenixBase.Router.Helpers
+      import PhoenixBase.Gettext
+      import PhoenixBase.UserHelper
     end
   end
 
@@ -53,11 +53,11 @@ defmodule AwesomeApp.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import AwesomeApp.Router.Helpers
-      import AwesomeApp.ErrorHelpers
-      import AwesomeApp.Gettext
-      import AwesomeApp.ViewHelpers
-      import AwesomeApp.UserHelper
+      import PhoenixBase.Router.Helpers
+      import PhoenixBase.ErrorHelpers
+      import PhoenixBase.Gettext
+      import PhoenixBase.ViewHelpers
+      import PhoenixBase.UserHelper
     end
   end
 
@@ -71,10 +71,10 @@ defmodule AwesomeApp.Web do
     quote do
       use Phoenix.Channel
 
-      alias AwesomeApp.Repo
+      alias PhoenixBase.Repo
       import Ecto
       import Ecto.Query
-      import AwesomeApp.Gettext
+      import PhoenixBase.Gettext
     end
   end
 

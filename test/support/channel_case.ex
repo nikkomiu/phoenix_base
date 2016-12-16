@@ -1,4 +1,4 @@
-defmodule AwesomeApp.ChannelCase do
+defmodule PhoenixBase.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule AwesomeApp.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias AwesomeApp.Repo
+      alias PhoenixBase.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint AwesomeApp.Endpoint
+      @endpoint PhoenixBase.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(AwesomeApp.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixBase.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(AwesomeApp.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixBase.Repo, {:shared, self()})
     end
 
     :ok

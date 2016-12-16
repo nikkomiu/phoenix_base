@@ -1,5 +1,5 @@
-defmodule AwesomeApp.TestHelpers do
-  alias AwesomeApp.Repo
+defmodule PhoenixBase.TestHelpers do
+  alias PhoenixBase.Repo
 
   def insert_user(attrs \\ %{}) do
     changes = Dict.merge(%{
@@ -11,9 +11,9 @@ defmodule AwesomeApp.TestHelpers do
       confirmed_at: Ecto.DateTime.from_erl(:calendar.universal_time)
     }, attrs)
 
-    %AwesomeApp.User{}
-    |> AwesomeApp.User.registration_changeset(changes)
-    |> AwesomeApp.User.locking_changeset(changes)
+    %PhoenixBase.User{}
+    |> PhoenixBase.User.registration_changeset(changes)
+    |> PhoenixBase.User.locking_changeset(changes)
     |> Repo.insert!()
   end
 end

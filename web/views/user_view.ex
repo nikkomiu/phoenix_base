@@ -1,3 +1,3 @@
-defmodule AwesomeApp.UserView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.UserView do
+  use PhoenixBase.Web, :view
 end

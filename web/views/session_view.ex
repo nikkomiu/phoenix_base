@@ -1,3 +1,3 @@
-defmodule AwesomeApp.SessionView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.SessionView do
+  use PhoenixBase.Web, :view
 end

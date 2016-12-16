@@ -1,7 +1,7 @@
-defmodule AwesomeApp.UserIdentityTest do
-  use AwesomeApp.ModelCase
+defmodule PhoenixBase.UserIdentityTest do
+  use PhoenixBase.ModelCase
 
-  alias AwesomeApp.UserIdentity
+  alias PhoenixBase.UserIdentity
 
   @valid_attrs %{external_uid: "some content", provider: "some content"}
   @invalid_attrs %{}

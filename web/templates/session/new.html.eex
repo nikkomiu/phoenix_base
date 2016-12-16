@@ -1,4 +1,4 @@
-<h3 class="text-xs-center">Sign in to Awesome App</h3>
+<h3 class="text-xs-center">Sign in to Phoenix Base</h3>
 <div class="login-card">
   <div class="card-block">
     <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f -> %>

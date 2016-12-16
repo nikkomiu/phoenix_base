@@ -1,8 +1,8 @@
 image: nikkoamiu/phoenix_framework:1.0
 
 variables:
-  POSTGRES_DB: awesome_app_test
-  POSTGRES_USER: awesome_app_svc
+  POSTGRES_DB: phoenix_base_test
+  POSTGRES_USER: phoenix_base_svc
   POSTGRES_PASSWORD: postgres
   MIX_ENV: test
 

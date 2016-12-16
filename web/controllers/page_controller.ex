@@ -1,5 +1,5 @@
-defmodule AwesomeApp.PageController do
-  use AwesomeApp.Web, :controller
+defmodule PhoenixBase.PageController do
+  use PhoenixBase.Web, :controller
 
   def index(conn, _params) do
     conn

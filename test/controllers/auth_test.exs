@@ -1,13 +1,13 @@
-defmodule AwesomeApp.AuthTest do
-  use AwesomeApp.ConnCase
+defmodule PhoenixBase.AuthTest do
+  use PhoenixBase.ConnCase
 
-  alias AwesomeApp.Auth
-  alias AwesomeApp.TestHelpers
+  alias PhoenixBase.Auth
+  alias PhoenixBase.TestHelpers
 
   setup %{conn: conn} do
     conn =
       conn
-      |> bypass_through(AwesomeApp.Router, :browser)
+      |> bypass_through(PhoenixBase.Router, :browser)
       |> get("/")
 
     {:ok, %{conn: conn}}

@@ -6,19 +6,19 @@
 use Mix.Config
 
 # General application configuration
-config :awesome_app,
-  ecto_repos: [AwesomeApp.Repo]
+config :phoenix_base,
+  ecto_repos: [PhoenixBase.Repo]
 
 # Configures the endpoint
-config :awesome_app, AwesomeApp.Endpoint,
+config :phoenix_base, PhoenixBase.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "YcfOzbUtlmWv9Bio0HSOsr644Cw2KXOG3bOZEa/xRH1Vx6AXB0s6SAMdMcqHTSID",
-  render_errors: [view: AwesomeApp.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: AwesomeApp.PubSub,
+  render_errors: [view: PhoenixBase.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: PhoenixBase.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures the email service
-config :awesome_app, AwesomeApp.Mailer,
+config :phoenix_base, PhoenixBase.Mailer,
   adapter: Bamboo.SMTPAdapter,
   server: "smtp.mailgun.org",
   port: 465,
@@ -34,10 +34,10 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :guardian, Guardian,
-  issuer: "AwesomeApp",
+  issuer: "PhoenixBase",
   ttl: { 30, :days },
   secret_key: "UxzJ7n4P9/WGAGMIHcrQruQ8mABkf89Thg+2MdGBUCeeJ/YxRMuXRy0WrNp1aPgt",
-  serializer: AwesomeApp.GuardianSerializer
+  serializer: PhoenixBase.GuardianSerializer
 
 config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,

@@ -1,10 +1,10 @@
-defmodule AwesomeApp.UserIdentity do
-  use AwesomeApp.Web, :model
+defmodule PhoenixBase.UserIdentity do
+  use PhoenixBase.Web, :model
 
   schema "user_identities" do
     field :provider, :string
     field :external_uid, :string
-    belongs_to :user, AwesomeApp.User
+    belongs_to :user, PhoenixBase.User
 
     timestamps()
   end

@@ -1,3 +1,3 @@
-defmodule AwesomeApp.LayoutViewTest do
-  use AwesomeApp.ConnCase, async: true
+defmodule PhoenixBase.LayoutViewTest do
+  use PhoenixBase.ConnCase, async: true
 end

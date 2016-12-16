@@ -1,3 +1,3 @@
-defmodule AwesomeApp.EmailView do
-  use AwesomeApp.Web, :view
+defmodule PhoenixBase.EmailView do
+  use PhoenixBase.Web, :view
 end

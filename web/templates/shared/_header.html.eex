@@ -1,6 +1,6 @@
 <nav id="site-navbar" class="navbar navbar-dark bg-primary navbar-full">
   <ul class="nav navbar-nav float-xs-left">
-    <%= link "Awesome App", to: page_path(@conn, :index), class: "navbar-brand" %>
+    <%= link "Phoenix Base", to: page_path(@conn, :index), class: "navbar-brand" %>
     <li class="nav-item">
       <%= link "About", to: page_path(@conn, :about), class: "nav-link" %>
     </li>

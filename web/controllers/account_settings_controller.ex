@@ -1,12 +1,12 @@
-defmodule AwesomeApp.AccountSettingsController do
-  use AwesomeApp.Web, :controller
+defmodule PhoenixBase.AccountSettingsController do
+  use PhoenixBase.Web, :controller
 
   def index(conn, _params), do:
     conn |> redirect(to: account_settings_path(conn, :profile))
 
   def profile(conn, _params) do
     user = current_user(conn)
-    changeset = AwesomeApp.User.profile_changeset(user)
+    changeset = PhoenixBase.User.profile_changeset(user)
 
     conn
     |> render("profile.html", user: user, changeset: changeset)
@@ -24,10 +24,10 @@ defmodule AwesomeApp.AccountSettingsController do
         user_params
       end
 
-    changeset = AwesomeApp.User.profile_changeset(user, user_params)
+    changeset = PhoenixBase.User.profile_changeset(user, user_params)
 
 
-    case AwesomeApp.Repo.update(changeset) do
+    case PhoenixBase.Repo.update(changeset) do
       {:ok, u} ->
         # TODO: Send email confirmation if email changed
 

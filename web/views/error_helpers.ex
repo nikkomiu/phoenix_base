@@ -1,4 +1,4 @@
-defmodule AwesomeApp.ErrorHelpers do
+defmodule PhoenixBase.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -32,9 +32,9 @@ defmodule AwesomeApp.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(AwesomeApp.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(PhoenixBase.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(AwesomeApp.Gettext, "errors", msg, opts)
+      Gettext.dgettext(PhoenixBase.Gettext, "errors", msg, opts)
     end
     |> String.capitalize()
   end

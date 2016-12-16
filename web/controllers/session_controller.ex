@@ -1,5 +1,5 @@
-defmodule AwesomeApp.SessionController do
-  use AwesomeApp.Web, :controller
+defmodule PhoenixBase.SessionController do
+  use PhoenixBase.Web, :controller
 
   def new(conn, _params) do
     # TODO: Don't show form if logged in
@@ -8,7 +8,7 @@ defmodule AwesomeApp.SessionController do
 
   def create(conn, %{"session" => session_params}) do
     # TODO: Don't log in if logged in
-    case AwesomeApp.Auth.login_by_username_and_password(conn, session_params) do
+    case PhoenixBase.Auth.login_by_username_and_password(conn, session_params) do
       {:ok, conn} ->
         conn
         |> redirect(to: "/")
@@ -40,7 +40,7 @@ defmodule AwesomeApp.SessionController do
   end
 
   def forgot(%{method: "POST"} = conn, %{"session" => %{"email" => email}}) do
-    AwesomeApp.Auth.forgot_password(email)
+    PhoenixBase.Auth.forgot_password(email)
 
     conn
     |> put_flash(:info, "Password reset instructions have been sent to you.")

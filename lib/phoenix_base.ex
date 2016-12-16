@@ -1,4 +1,4 @@
-defmodule AwesomeApp do
+defmodule PhoenixBase do
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
@@ -9,23 +9,23 @@ defmodule AwesomeApp do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(AwesomeApp.Repo, []),
+      supervisor(PhoenixBase.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(AwesomeApp.Endpoint, []),
-      # Start your own worker by calling: AwesomeApp.Worker.start_link(arg1, arg2, arg3)
-      # worker(AwesomeApp.EmailWorker, []),
+      supervisor(PhoenixBase.Endpoint, []),
+      # Start your own worker by calling: PhoenixBase.Worker.start_link(arg1, arg2, arg3)
+      # worker(PhoenixBase.EmailWorker, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: AwesomeApp.Supervisor]
+    opts = [strategy: :one_for_one, name: PhoenixBase.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    AwesomeApp.Endpoint.config_change(changed, removed)
+    PhoenixBase.Endpoint.config_change(changed, removed)
     :ok
   end
 end

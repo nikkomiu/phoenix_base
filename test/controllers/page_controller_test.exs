@@ -1,5 +1,5 @@
-defmodule AwesomeApp.PageControllerTest do
-  use AwesomeApp.ConnCase
+defmodule PhoenixBase.PageControllerTest do
+  use PhoenixBase.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

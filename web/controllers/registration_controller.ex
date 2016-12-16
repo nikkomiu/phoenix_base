@@ -1,18 +1,18 @@
-defmodule AwesomeApp.RegistrationController do
-  use AwesomeApp.Web, :controller
+defmodule PhoenixBase.RegistrationController do
+  use PhoenixBase.Web, :controller
 
   def new(conn, _params) do
     # TODO: Don't show registration page if logged in
-    changeset = AwesomeApp.User.registration_changeset(%AwesomeApp.User{})
+    changeset = PhoenixBase.User.registration_changeset(%PhoenixBase.User{})
 
     conn
     |> render("new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
-    changeset = AwesomeApp.User.registration_changeset(%AwesomeApp.User{}, user_params)
+    changeset = PhoenixBase.User.registration_changeset(%PhoenixBase.User{}, user_params)
 
-    case AwesomeApp.Repo.insert(changeset) do
+    case PhoenixBase.Repo.insert(changeset) do
       {:ok, _user} ->
         conn
         |> redirect(to: session_path(conn, :new))

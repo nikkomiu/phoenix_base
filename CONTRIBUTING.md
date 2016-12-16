@@ -2,11 +2,11 @@
 
 ## Pull Requests Welcome
 
-1. Fork awesome_app
+1. Fork phoenix_base
 2. Create a topic branch
 3. Make logically-grouped commits with clear commit messages
 4. Push commits to your fork
-5. Open a pull request against awesome_app/develop
+5. Open a pull request against phoenix_base/develop
 
 ## Issues
 

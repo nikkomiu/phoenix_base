@@ -1,7 +1,7 @@
-defmodule AwesomeApp.UserStore do
-  use AwesomeApp.Web, :model_store
+defmodule PhoenixBase.UserStore do
+  use PhoenixBase.Web, :model_store
 
-  alias AwesomeApp.User
+  alias PhoenixBase.User
 
   def find_by_email(email) do
     Repo.one(from u in User,

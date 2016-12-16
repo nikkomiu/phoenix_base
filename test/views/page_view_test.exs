@@ -1,3 +1,3 @@
-defmodule AwesomeApp.PageViewTest do
-  use AwesomeApp.ConnCase, async: true
+defmodule PhoenixBase.PageViewTest do
+  use PhoenixBase.ConnCase, async: true
 end
