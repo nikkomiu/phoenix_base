@@ -13,7 +13,14 @@ defmodule PhoenixBase.TestHelpers do
 
     %PhoenixBase.User{}
     |> PhoenixBase.User.registration_changeset(changes)
-    |> PhoenixBase.User.locking_changeset(changes)
+#    |> PhoenixBase.User.locking_changeset(changes)
     |> Repo.insert!()
+  end
+
+  def insert_user_login(user_id, attrs \\ %{}) do
+    changes = Dict.merge(%{
+      password: "Password1",
+      password_confirmation: "Password1"
+    })
   end
 end

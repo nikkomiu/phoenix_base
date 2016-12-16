@@ -17,7 +17,7 @@ defmodule PhoenixBase.AuthTest do
     user = TestHelpers.insert_user()
 
     {:ok, conn} =
-      Auth.login_by_username_and_password(conn, user.username, user.password)
+      Auth.login_by_username_and_password(conn, %{"username" => user.username, "password" => user.password})
 
     assert Guardian.Plug.current_resource(conn).id == user.id
   end
