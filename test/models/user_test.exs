@@ -3,6 +3,6 @@ defmodule PhoenixBase.UserTest do
 
   alias PhoenixBase.User
 
-  test "changeset with valid attributes"
-  test "changeset with invalid attributes"
+#  test "changeset with valid attributes"
+#  test "changeset with invalid attributes"
 end
