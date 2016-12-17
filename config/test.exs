@@ -12,5 +12,5 @@ config :logger, level: :warn
 # Configure your database
 config :phoenix_base, PhoenixBase.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: "ecto://postgres:postgres@localhost/phoenix_base_test",
+  url: "ecto://postgres:postgres@postgres/phoenix_base_test",
   pool: Ecto.Adapters.SQL.Sandbox
