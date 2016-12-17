@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "deploy": "NODE_ENV=production ./node_modules/.bin/webpack -p && mix phoenix.digest",
-    "watch": "webpack --watch --progress --color"
+    "watch": "./node_modules/.bin/webpack --watch --progress --color"
   },
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.5",
