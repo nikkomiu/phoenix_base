@@ -1,7 +1,7 @@
 defmodule PhoenixBase.SessionController do
   use PhoenixBase.Web, :controller
 
-  import Guardian.Plug, only: [sign_out: 0]
+  import Guardian.Plug, only: [sign_out: 1]
 
   alias PhoenixBase.Auth
 
