@@ -100,7 +100,7 @@ releasearaptor:
   artifacts:
     name: $CI_PROJECT_NAME
     paths:
-      - _build/$MIX_ENV/rel/$CI_PROJECT_NAME/
+      - _build/$MIX_ENV/rel/
 
 # PUSH IMAGE STAGE
 containerize:

@@ -12,7 +12,7 @@ ARG APP_VER=0.0.1
 ARG MIX_ENV=prod
 
 # Copy release
-COPY _build/$MIX_ENV/rel/phoenix_base/ /usr/phoenix_base/
+COPY _build/prod/rel/phoenix_base/ /usr/phoenix_base/
 WORKDIR /usr/phoenix_base
 RUN chmod +x bin/*
 
