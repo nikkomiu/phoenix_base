@@ -13,11 +13,13 @@ defmodule PhoenixBase.Router do
   end
 
   pipeline :browser_auth do
-    plug Guardian.Plug.EnsureAuthenticated, handler: PhoenixBase.SessionController
+    plug Guardian.Plug.EnsureAuthenticated,
+      handler: PhoenixBase.SessionController
   end
 
   pipeline :browser_no_auth do
-    plug Guardian.Plug.EnsureNotAuthenticated, handler: PhoenixBase.SessionController
+    plug Guardian.Plug.EnsureNotAuthenticated,
+      handler: PhoenixBase.SessionController
   end
 
   pipeline :api do
@@ -61,8 +63,10 @@ defmodule PhoenixBase.Router do
     get "/settings/profile", AccountSettingsController, :profile
     post "/settings/profile", AccountSettingsController, :update_profile
     get "/settings/account", AccountSettingsController, :account
-    post "/settings/account/password", AccountSettingsController, :update_password
-    post "/settings/account/username", AccountSettingsController, :update_username
+    post "/settings/account/password", AccountSettingsController,
+      :update_password
+    post "/settings/account/username", AccountSettingsController,
+      :update_username
     delete "/settings/account", AccountSettingsController, :delete_account
   end
 end

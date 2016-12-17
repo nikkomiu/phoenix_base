@@ -1,6 +1,10 @@
 defmodule PhoenixBase do
   use Application
 
+  alias PhoenixBase.Endpoint
+
+  @moduledoc false
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -12,7 +16,8 @@ defmodule PhoenixBase do
       supervisor(PhoenixBase.Repo, []),
       # Start the endpoint when the application starts
       supervisor(PhoenixBase.Endpoint, []),
-      # Start your own worker by calling: PhoenixBase.Worker.start_link(arg1, arg2, arg3)
+      # Start your own worker by calling:
+      #   PhoenixBase.Worker.start_link(arg1, arg2, arg3)
       # worker(PhoenixBase.EmailWorker, []),
     ]
 
@@ -25,7 +30,7 @@ defmodule PhoenixBase do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PhoenixBase.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end

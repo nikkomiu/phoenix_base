@@ -1,38 +1,48 @@
 defmodule PhoenixBase.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+  import Guardian.Plug, only: [sign_in: 2]
 
-  def login_by_username_and_password(conn, %{"username" => username, "password" => pass}) do
-    PhoenixBase.UserStore.find_by_username_or_email(username)
+  alias PhoenixBase.Repo
+  alias PhoenixBase.User
+  alias PhoenixBase.UserStore
+
+  @moduledoc false
+
+  def login_by_user_and_password(conn,
+      %{"username" => username, "password" => pass}) do
+    username
+    |> UserStore.find_by_username_or_email()
     |> verify_access(pass)
     |> update_login_metrics
     |> case do
       {:ok, user} ->
-        {:ok, Guardian.Plug.sign_in(conn, user)}
+        {:ok, sign_in(conn, user)}
       {:error, reason} ->
         {:error, reason, conn}
     end
   end
 
   def forgot_password(email) do
-    PhoenixBase.UserStore.find_by_email(email)
+    UserStore.find_by_email(email)
     # TODO: Send Forgot Password Email
   end
 
   defp update_login_metrics(tuple) do
     case tuple do
       {:ok, user} ->
-        PhoenixBase.User.login_changeset(user, %{
+        user
+        |> User.login_changeset(%{
           sign_in_count: (user.sign_in_count + 1),
           failed_attempts: 0
-        }) |> PhoenixBase.Repo.update!
+        }) |> Repo.update!
 
         {:ok, user}
       {:error, :unauthorized, user} ->
-        changeset = PhoenixBase.User.login_changeset(user, %{
+        changeset = User.login_changeset(user, %{
           failed_attempts: (user.failed_attempts + 1)
         })
 
-        changeset |> PhoenixBase.Repo.update!
+        changeset |> Repo.update!
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->

@@ -1,6 +1,8 @@
 defmodule PhoenixBase.Email do
   use Bamboo.Phoenix, view: PhoenixBase.EmailView
 
+  @moduledoc false
+
   def user_reset_password_email(conn, email_address, reset_token) do
     new_email
     |> to(email_address)

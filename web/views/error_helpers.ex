@@ -32,10 +32,13 @@ defmodule PhoenixBase.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(PhoenixBase.Gettext, "errors", msg, msg, count, opts)
+      PhoenixBase.Gettext
+      |> Gettext.dngettext("errors", msg, msg, count, opts)
+      |> String.capitalize()
     else
-      Gettext.dgettext(PhoenixBase.Gettext, "errors", msg, opts)
+      PhoenixBase.Gettext
+      |> Gettext.dgettext("errors", msg, opts)
+      |> String.capitalize()
     end
-    |> String.capitalize()
   end
 end

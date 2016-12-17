@@ -20,7 +20,7 @@ defmodule PhoenixBase.Mixfile do
   def application do
     [mod: {PhoenixBase, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :comeonin, :guardian, :timex,
+                    :phoenix_ecto, :postgrex, :comeonin, :guardian, :timex, :exq,
                     :gettext, :phoenix_slime, :bamboo, :bamboo_smtp, :httpotion]]
   end
 

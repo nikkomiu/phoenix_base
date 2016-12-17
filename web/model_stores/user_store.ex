@@ -3,6 +3,8 @@ defmodule PhoenixBase.UserStore do
 
   alias PhoenixBase.User
 
+  @moduledoc false
+
   def find_by_email(email) do
     Repo.one(from u in User,
       where: u.email == ^email)

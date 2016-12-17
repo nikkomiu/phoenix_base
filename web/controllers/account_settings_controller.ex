@@ -1,12 +1,14 @@
 defmodule PhoenixBase.AccountSettingsController do
   use PhoenixBase.Web, :controller
 
+  alias PhoenixBase.User
+
   def index(conn, _params), do:
     conn |> redirect(to: account_settings_path(conn, :profile))
 
   def profile(conn, _params) do
     user = current_user(conn)
-    changeset = PhoenixBase.User.profile_changeset(user)
+    changeset = User.profile_changeset(user)
 
     conn
     |> render("profile.html", user: user, changeset: changeset)
@@ -24,10 +26,10 @@ defmodule PhoenixBase.AccountSettingsController do
         user_params
       end
 
-    changeset = PhoenixBase.User.profile_changeset(user, user_params)
+    changeset = User.profile_changeset(user, user_params)
 
 
-    case PhoenixBase.Repo.update(changeset) do
+    case Repo.update(changeset) do
       {:ok, u} ->
         # TODO: Send email confirmation if email changed
 

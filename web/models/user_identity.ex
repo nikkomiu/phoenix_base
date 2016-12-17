@@ -1,6 +1,8 @@
 defmodule PhoenixBase.UserIdentity do
   use PhoenixBase.Web, :model
 
+  @moduledoc false
+
   schema "user_identities" do
     field :provider, :string
     field :external_uid, :string

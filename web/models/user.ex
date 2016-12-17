@@ -1,6 +1,12 @@
 defmodule PhoenixBase.User do
   use PhoenixBase.Web, :model
 
+  alias PhoenixBase.User
+  alias Ecto.DateTime
+  alias Ecto.UUID
+
+  @moduledoc false
+
   @derive {Phoenix.Param, key: :username}
 
   @max_login_attempts 3
@@ -31,7 +37,8 @@ defmodule PhoenixBase.User do
 
   def profile_changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:name, :bio, :url, :company, :phone_number, :unverified_email])
+    |> cast(params, [:name,:bio, :url, :company, :phone_number,
+        :unverified_email])
     |> validate_required([:name])
   end
 
@@ -49,7 +56,8 @@ defmodule PhoenixBase.User do
     |> validate_format(:username, ~r/^[a-zA-Z0-9\.\-\_]*$/)
   end
 
-  def verify_email_changeset(%PhoenixBase.User{unverified_email: new_email} = user) do
+  def verify_email_changeset(%User{unverified_email: new_email}
+      = user) do
     user
     |> put_change(:email, new_email)
     |> put_change(:unverified_email, nil)
@@ -60,8 +68,8 @@ defmodule PhoenixBase.User do
       %Ecto.Changeset{valid?: true, changes: %{failed_attempts: attempts}} ->
         if attempts >= @max_login_attempts do
           changeset
-          |> put_change(:locked_at, Ecto.DateTime.utc)
-          |> put_change(:unlock_token, Ecto.UUID.generate())
+          |> put_change(:locked_at, DateTime.utc)
+          |> put_change(:unlock_token, UUID.generate())
         else
           changeset
         end

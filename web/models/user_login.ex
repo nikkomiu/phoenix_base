@@ -3,6 +3,8 @@ defmodule PhoenixBase.UserLogin do
 
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
+  @moduledoc false
+
   @max_login_attempts 3
 
   schema "user_logins" do
