@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:jessie-slim
 
 # WARNING: This expects there to be a release in the rel directory
 
@@ -12,12 +12,9 @@ ARG APP_VER=0.0.1
 ARG MIX_ENV=prod
 
 # Copy release
-COPY rel/phoenix_base/releases/$APP_VER/phoenix_base.tar.gz /usr/phoenix_base/app.tar.gz
+COPY _build/$MIX_ENV/rel/phoenix_base/ /usr/phoenix_base/
 WORKDIR /usr/phoenix_base
-
-# Extract release
-RUN tar -xvf app.tar.gz
-RUN chmod +x bin/phoenix_base
+RUN chmod +x bin/*
 
 # Runtime ENV
 ENV LANG=en_US.UTF-8
