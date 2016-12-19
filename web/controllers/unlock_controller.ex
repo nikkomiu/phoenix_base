@@ -67,12 +67,23 @@ defmodule PhoenixBase.UnlockController do
     user = PhoenixBase.UserStore.find_by_unlock_token(token)
 
     if user do
-      # TODO unlock the account
+      user
+      |> PhoenixBase.User.unlock_account_changeset()
+      |> PhoenixBase.Repo.update()
+      |> case do
+        {:ok, _user} ->
+          conn
+          |> put_flash(:info, "Your account has been successfully unlocked.")
+        {:error, changeset} ->
+          conn
+          |> put_flash(:error, "Could not unlock account. " <>
+              "Please try again or contact your administrator.")
+      end
     else
       conn
       |> put_flash(:error, "Could not verify unlock token.")
-      |> redirect(to: session_path(conn, :new))
     end
+    |> redirect(to: session_path(conn, :new))
   end
 
   def unlock_account(conn, _params), do: bad_link(conn)

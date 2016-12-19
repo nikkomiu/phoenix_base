@@ -57,24 +57,24 @@ defmodule PhoenixBase.RegistrationController do
       %{"user_login" => %{"token" => token} = login_params}) do
     user = PhoenixBase.UserStore.find_by_confirmation_token(token)
 
-    # TODO user may not exist and will 500
+    if user do
+      changeset =
+        user
+        |> Ecto.build_assoc(:login)
+        |> UserLogin.registration_changeset(login_params)
 
-    changeset =
-      user
-      |> Ecto.build_assoc(:login)
-      |> UserLogin.registration_changeset(login_params)
-
-    case Repo.insert(changeset) do
-      {:ok, _user_login} ->
-        conn
-        |> put_flash(:info, "Your account has been confirmed, you can now log in.")
-        |> redirect(to: session_path(conn, :new))
-      {:error, changeset} ->
-        conn
-        |> render("complete_registration.html", changeset: changeset, token: token)
+      case Repo.insert(changeset) do
+        {:ok, _user_login} ->
+          conn
+          |> put_flash(:info, "Your account has been confirmed, you can now log in.")
+          |> redirect(to: session_path(conn, :new))
+        {:error, changeset} ->
+          conn
+          |> render("complete_registration.html", changeset: changeset, token: token)
+      end
+    else
+      conn
+      |> render("complete_registration.html", changeset: changeset, token: token)
     end
-
-    conn
-    |> render("complete_registration.html", changeset: changeset, token: token)
   end
 end

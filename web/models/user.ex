@@ -79,6 +79,7 @@ defmodule PhoenixBase.User do
 
   def unlock_account_changeset(user) do
     user
+    |> cast(%{}, [])
     |> put_change(:unlock_token, nil)
     |> put_change(:locked_at, nil)
   end
