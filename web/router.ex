@@ -35,7 +35,7 @@ defmodule PhoenixBase.Router do
     get "/login/forgot", UnlockController, :forgot_password
     post "/login/forgot", UnlockController, :forgot_password_submit
     get "/login/reset", UnlockController, :password_reset
-    post "/login/reset", UnlockController, :complete_password_reset
+    put "/login/reset", UnlockController, :complete_password_reset
     get "/login/unlock", UnlockController, :unlock_account
     get "/login/verify", UnlockController, :verify_account
     get "/login/confirm", UnlockController, :confirm_email
@@ -50,6 +50,8 @@ defmodule PhoenixBase.Router do
 
     get "/register", RegistrationController, :new
     post "/register", RegistrationController, :create
+    get "/register/complete", RegistrationController, :complete_registration
+    post "/register/complete", RegistrationController, :complete_registration
   end
 
   # Authenticated

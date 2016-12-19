@@ -1,0 +1,26 @@
+<h3 class="text-xs-center">Complete Your Registration</h3>
+<div class="login-card">
+  <div class="card-block">
+    <%= form_for @changeset, registration_path(@conn, :complete_registration, %{token: @token}), fn f -> %>
+      <%= form_group f, :password do %>
+        <%= label f, :password %>
+        <%= password_input f, :password, class: "form-control" %>
+        <%= if message = f.errors[:password] do %>
+          <div class="form-control-feedback"><%= translate_error(message) %></div>
+        <% end %>
+      <% end %>
+
+      <%= form_group f, :password_confirmation do %>
+        <%= label f, :password_confirmation, "Confirm password" %>
+        <%= password_input f, :password_confirmation, class: "form-control" %>
+        <%= if message = f.errors[:password_confirmation] do %>
+          <div class="form-control-feedback"><%= translate_error(message) %></div>
+        <% end %>
+      <% end %>
+
+      <%= hidden_input f, :token, value: @token %>
+
+      <%= submit "Register", class: "btn btn-block btn-outline-primary" %>
+    <% end %>
+  </div>
+</div>

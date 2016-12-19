@@ -51,6 +51,22 @@ defmodule PhoenixBase.Auth do
     end
   end
 
+  def user_login_from_reset_token(token) do
+    {uuid_status, uuid_token} = Ecto.UUID.cast(token)
+
+    cond do
+      uuid_status == :error ->
+        {:error, :invalid_format}
+
+      user_login = UserStore.find_user_login_by_reset_token(uuid_token) ->
+        # TODO verify that the token has not passed the expiration time
+        {:ok, user_login}
+
+      true ->
+        {:error, :not_found}
+    end
+  end
+
   defp update_login_metrics(tuple) do
     case tuple do
       {:ok, user} ->

@@ -24,22 +24,17 @@ defmodule PhoenixBase.UnlockController do
   end
 
   def password_reset(conn, %{"token" => token}) do
-    {uuid_status, token_uuid} = Ecto.UUID.cast(token)
+    case Auth.user_login_from_reset_token(token) do
+      {:ok, user_login} ->
+        changeset = PhoenixBase.UserLogin.registration_changeset(user_login)
 
-    cond do
-      uuid_status == :error ->
         conn
-        |> put_flash(:error, "Reset token is not in correct format.")
-        |> redirect(to: session_path(conn, :new))
+        |> render("reset_password.html", changeset: changeset, token: token)
 
-      user_login = PhoenixBase.UserStore.find_user_login_by_reset_token(token_uuid) ->
-        conn
-        |> render("reset_password.html", user_login: user_login)
-
-      true ->
+      {:error, _} ->
         conn
         |> put_flash(:error, "The token was either not found or has expired. "<>
-          "Please request a new reset token.")
+          "Please request a new password reset token.")
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -50,8 +45,25 @@ defmodule PhoenixBase.UnlockController do
     |> redirect(to: session_path(conn, :new))
   end
 
-  def complete_password_reset(conn, %{"reset" => reset_params}) do
-    # TODO reset the password
-    conn
+  def complete_password_reset(conn, %{"user_login" => %{"token" => token} = reset_params}) do
+    case Auth.user_login_from_reset_token(token) do
+      {:ok, user_login} ->
+        changeset = PhoenixBase.UserLogin.registration_changeset(user_login, reset_params)
+
+        case PhoenixBase.Repo.update(changeset) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "Your password has been successfully updated.")
+            |> redirect(to: session_path(conn, :new))
+          {:error, changeset} ->
+            conn
+            |> render("reset_password.html", changeset: changeset, token: token)
+        end
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "The token was either not found or has expired. "<>
+          "Please request a new password reset token.")
+        |> redirect(to: session_path(conn, :new))
+    end
   end
 end

@@ -34,23 +34,26 @@ defmodule PhoenixBase.UserLogin do
 
   def registration_changeset(user_login, params \\ %{}) do
     user_login
-    |> cast(params, [:user_id, :password, :password_confirmation])
-    |> validate_required([:user_id, :password, :password_confirmation])
+    |> cast(params, [:password, :password_confirmation])
+    |> validate_required([:password, :password_confirmation])
+    |> assoc_constraint(:user)
     |> validate_confirmation(:password)
     |> put_encrypted_password()
+    |> remove_reset_token()
   end
 
   defp put_reset_token(changeset) do
-    case changeset do
-      %Ecto.Changeset{valid?: true} ->
-        if get_field(changeset, :reset_token) do
-          changeset
-        else
-          put_change(changeset, :reset_token, UUID.generate)
-        end
-      _ ->
-        changeset
+    if get_field(changeset, :reset_token) != nil do
+      changeset
+    else
+      put_change(changeset, :reset_token, UUID.generate)
     end
+  end
+
+  defp remove_reset_token(changeset) do
+    changeset
+    |> put_change(:reset_token, nil)
+    |> put_change(:reset_sent, nil)
   end
 
   defp put_encrypted_password(changeset) do

@@ -6,12 +6,10 @@ defmodule PhoenixBase.SessionController do
   alias PhoenixBase.Auth
 
   def new(conn, _params) do
-    # TODO: Don't show form if logged in
     render conn, "new.html"
   end
 
   def create(conn, %{"session" => session_params}) do
-    # TODO: Don't log in if logged in
     case Auth.login_by_user_and_password(conn, session_params) do
       {:ok, conn} ->
         conn
