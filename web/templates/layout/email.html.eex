@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width">
   </head>
   <body>
-    <p>Hello!</p>
+    <h3 style="margin-top: 0; padding-top: 0;">
+      <%= if user = current_user(@conn, default: @user) do %>
+        <%= user.name %>,
+      <% else %>
+        Hello,
+      <% end %>
+    </h3>
 
     <%= render @view_module, @view_template, assigns %>
 
-    <p>- The Phoenix Base Team.</p>
+    <h3>- The Phoenix Base Team</h3>
   </body>
 </html>

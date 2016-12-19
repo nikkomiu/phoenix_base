@@ -3,8 +3,8 @@ defmodule PhoenixBase.UserHelper do
 
   @moduledoc false
 
-  def current_user(conn) do
-    current_resource(conn)
+  def current_user(conn, opts \\ %{}) do
+    current_resource(conn) || opts[:default]
   end
 
   def user_signed_in?(conn) do
@@ -14,8 +14,8 @@ defmodule PhoenixBase.UserHelper do
   def gravatar_url(conn, opts \\ []) do
     opts = [size: 200] |> Keyword.merge(opts) |> Enum.into(%{})
 
-    "https://www.gravatar.com/avatar/#{current_user(conn).email
-    |> md5_hash}?d=mm&s=#{opts.size}"
+    "https://www.gravatar.com/avatar/" <>
+    "#{current_user(conn).email |> md5_hash}?d=mm&s=#{opts.size}"
   end
 
   defp md5_hash(str) do

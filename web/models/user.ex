@@ -29,15 +29,20 @@ defmodule PhoenixBase.User do
     field :unlock_token, Ecto.UUID
     field :failed_attempts, :integer
 
-    has_one :user_login, PhoenixBase.UserLogin
-    has_many :user_identities, PhoenixBase.UserIdentity
+    has_one :login, PhoenixBase.UserLogin
+    has_many :identities, PhoenixBase.UserIdentity
 
     timestamps()
   end
 
+  def email_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:verification_sent_at, :confirmed_at, :locked_at])
+  end
+
   def profile_changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:name,:bio, :url, :company, :phone_number,
+    |> cast(params, [:name, :bio, :url, :company, :phone_number,
         :unverified_email])
     |> validate_required([:name])
   end

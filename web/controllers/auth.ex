@@ -2,8 +2,11 @@ defmodule PhoenixBase.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Guardian.Plug, only: [sign_in: 2]
 
+  alias PhoenixBase.Email
+  alias PhoenixBase.Mailer
   alias PhoenixBase.Repo
   alias PhoenixBase.User
+  alias PhoenixBase.UserLogin
   alias PhoenixBase.UserStore
 
   @moduledoc false
@@ -22,9 +25,30 @@ defmodule PhoenixBase.Auth do
     end
   end
 
-  def forgot_password(email) do
-    UserStore.find_by_email(email)
-    # TODO: Send Forgot Password Email
+  def forgot_password(conn, email) do
+    case UserStore.find_by_email(email) do
+      %User{} = user ->
+        changeset = UserLogin.reset_token_changeset(user.login)
+
+        case Repo.update(changeset) do
+          {:ok, user_login} ->
+            Task.async fn ->
+              conn
+              |> Email.user_reset_password_email(user.id)
+              |> Mailer.deliver_now
+
+              user_login
+              |> UserLogin.email_changeset(%{reset_sent: Ecto.DateTime.utc})
+              |> Repo.update!
+            end
+
+            {:ok, :scheduled}
+          {:error, _} ->
+            {:error, :update_token}
+        end
+      _ ->
+        {:error, :not_found}
+    end
   end
 
   defp update_login_metrics(tuple) do
@@ -46,7 +70,10 @@ defmodule PhoenixBase.Auth do
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->
-            # TODO: Send Locked Out Email
+            Task.async fn ->
+              # TODO Send lock out email
+            end
+
             {:error, :locked}
           _ ->
             {:error, :unauthorized}
@@ -62,7 +89,7 @@ defmodule PhoenixBase.Auth do
         {:error, :locked}
       user && user.confirmed_at != nil ->
         {:error, :unconfirmed}
-      user && checkpw(password, user.user_login.encrypted_password) ->
+      user && checkpw(password, user.login.encrypted_password) ->
         {:ok, user}
       user ->
         {:error, :unauthorized, user}

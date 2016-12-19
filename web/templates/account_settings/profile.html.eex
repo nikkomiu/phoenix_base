@@ -53,6 +53,7 @@
         <% end %>
         <div class="col-sm-4">
           <div class="form-group">
+            <div class="hidden-sm-up" style="height: 1rem"></div>
             <img src="<%= gravatar_url(@conn, size: 350) %>" class="img-fluid rounded" />
             <p class="text-xs-center"><i>(Image set by <a href="https://www.gravatar.com/">Gravatar</a>)</i></p>
           </div>

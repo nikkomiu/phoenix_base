@@ -3,6 +3,8 @@ defmodule PhoenixBase.UserLogin do
 
   import Comeonin.Bcrypt, only: [hashpwsalt: 1]
 
+  alias Ecto.UUID
+
   @moduledoc false
 
   @max_login_attempts 3
@@ -19,12 +21,36 @@ defmodule PhoenixBase.UserLogin do
     timestamps()
   end
 
+  def email_changeset(user_login, params \\ %{}) do
+    user_login
+    |> cast(params, [:reset_sent])
+  end
+
+  def reset_token_changeset(user_login) do
+    user_login
+    |> cast(%{}, [:reset_token])
+    |> put_reset_token()
+  end
+
   def registration_changeset(user_login, params \\ %{}) do
     user_login
     |> cast(params, [:user_id, :password, :password_confirmation])
     |> validate_required([:user_id, :password, :password_confirmation])
     |> validate_confirmation(:password)
     |> put_encrypted_password()
+  end
+
+  defp put_reset_token(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true} ->
+        if get_field(changeset, :reset_token) do
+          changeset
+        else
+          put_change(changeset, :reset_token, UUID.generate)
+        end
+      _ ->
+        changeset
+    end
   end
 
   defp put_encrypted_password(changeset) do

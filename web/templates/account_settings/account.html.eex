@@ -16,7 +16,7 @@
           <input type="password" class="form-control" />
         </div>
 
-        <%= link "I forgot my password", to: session_path(@conn, :forgot), class: "btn btn-link float-xs-left" %>
+        <%= link "I forgot my password", to: unlock_path(@conn, :forgot_password), class: "btn btn-link float-xs-left" %>
         <button class="btn btn-outline-primary float-xs-right">Update password</button>
       </div>
     </div>

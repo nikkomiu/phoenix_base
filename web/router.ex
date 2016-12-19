@@ -32,11 +32,13 @@ defmodule PhoenixBase.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
 
-    get "/login/forgot", SessionController, :forgot
-    post "/login/forgot", SessionController, :forgot
-    get "/login/unlock/:id", SessionController, :unlock
-    get "/login/verify/:id", SessionController, :verify
-    get "/login/confirm/:id", SessionController, :confirm
+    get "/login/forgot", UnlockController, :forgot_password
+    post "/login/forgot", UnlockController, :forgot_password_submit
+    get "/login/reset", UnlockController, :password_reset
+    post "/login/reset", UnlockController, :complete_password_reset
+    get "/login/unlock", UnlockController, :unlock_account
+    get "/login/verify", UnlockController, :verify_account
+    get "/login/confirm", UnlockController, :confirm_email
   end
 
   # Unauthenticated

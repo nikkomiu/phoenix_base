@@ -40,19 +40,6 @@ defmodule PhoenixBase.SessionController do
     |> redirect(to: "/")
   end
 
-  def forgot(%{method: "GET"} = conn, _params) do
-    conn
-    |> render("forgot.html")
-  end
-
-  def forgot(%{method: "POST"} = conn, %{"session" => %{"email" => email}}) do
-    Auth.forgot_password(email)
-
-    conn
-    |> put_flash(:info, "Password reset instructions have been sent to you.")
-    |> render("forgot.html")
-  end
-
   def unauthenticated(conn, _params) do
     conn
     |> put_flash(:error, "You need to sign in to do that.")
