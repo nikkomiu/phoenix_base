@@ -57,6 +57,8 @@ defmodule PhoenixBase.RegistrationController do
       %{"user_login" => %{"token" => token} = login_params}) do
     user = PhoenixBase.UserStore.find_by_confirmation_token(token)
 
+    # TODO user may not exist and will 500
+
     changeset =
       user
       |> Ecto.build_assoc(:login)

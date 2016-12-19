@@ -39,11 +39,7 @@ defmodule PhoenixBase.UnlockController do
     end
   end
 
-  def password_reset(conn, _params) do
-    conn
-    |> put_flash(:error, "Please be sure to follow the link in your email.")
-    |> redirect(to: session_path(conn, :new))
-  end
+  def password_reset(conn, _params), do: bad_link(conn)
 
   def complete_password_reset(conn, %{"user_login" => %{"token" => token} = reset_params}) do
     case Auth.user_login_from_reset_token(token) do
@@ -65,5 +61,25 @@ defmodule PhoenixBase.UnlockController do
           "Please request a new password reset token.")
         |> redirect(to: session_path(conn, :new))
     end
+  end
+
+  def unlock_account(conn, %{"token" => token}) do
+    user = PhoenixBase.UserStore.find_by_unlock_token(token)
+
+    if user do
+      # TODO unlock the account
+    else
+      conn
+      |> put_flash(:error, "Could not verify unlock token.")
+      |> redirect(to: session_path(conn, :new))
+    end
+  end
+
+  def unlock_account(conn, _params), do: bad_link(conn)
+
+  defp bad_link(conn) do
+    conn
+    |> put_flash(:error, "Please be sure to follow the link in your email.")
+    |> redirect(to: session_path(conn, :new))
   end
 end

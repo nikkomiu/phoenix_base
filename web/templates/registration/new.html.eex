@@ -31,6 +31,10 @@
   </div>
 </div>
 
+<div class="text-xs-center">
+  <%= link "Sign in", to: session_path(@conn, :new), class: "btn btn-link" %>
+</div>
+
 <script type="text/javascript">
   $('input#user_name').keyup(function() {
     $('input#user_username').val(

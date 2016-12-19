@@ -18,16 +18,16 @@ defmodule PhoenixBase.SessionController do
         conn
         |> put_flash(:error, "Your account is locked. Check your email for" <>
             "unlock instructions or contact your administrator.")
-        |> render("new.html", username: session_params.username)
+        |> render("new.html", username: session_params["username"])
       {:error, :unconfirmed, conn} ->
         conn
         |> put_flash(:error, "Your account is unconfirmed. Check your email" <>
             "for confirmation instructions.")
-        |> render("new.html", username: session_params.username)
+        |> render("new.html", username: session_params["username"])
       {:error, _reason, conn} ->
         conn
         |> put_flash(:error, "Incorrect Email or Password.")
-        |> render("new.html", username: session_params.username)
+        |> render("new.html", username: session_params["username"])
     end
   end
 

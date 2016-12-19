@@ -11,7 +11,7 @@ defmodule PhoenixBase.Email do
 
     user.email
     |> setup
-    |> subject("Finish Resetting your Phoenix Base Password")
+    |> subject("Finish resetting your Phoenix Base password")
     |> render("reset_password.html", conn: conn, user: user)
   end
 
@@ -20,8 +20,17 @@ defmodule PhoenixBase.Email do
 
     user.email
     |> setup
-    |> subject("Confirm Your Phoenix Base Account")
+    |> subject("Confirm your Phoenix Base account")
     |> render("registration_confirmation.html", conn: conn, user: user)
+  end
+
+  def user_locked_out_email(conn, user_id) do
+    user = PhoenixBase.UserStore.find_by_id(user_id)
+
+    user.email
+    |> setup
+    |> subject("You have been locked out of your Phoenix Base account")
+    |> render("locked_out.html", conn: conn, user: user)
   end
 
   defp setup(email_address) do

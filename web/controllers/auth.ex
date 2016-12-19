@@ -16,10 +16,10 @@ defmodule PhoenixBase.Auth do
     username
     |> UserStore.find_by_username_or_email()
     |> verify_access(pass)
-    |> update_login_metrics
+    |> update_login_metrics(conn)
     |> case do
       {:ok, user} ->
-        {:ok, sign_in(conn, user)}
+        {:ok, sign_in(conn, user) |> Plug.Conn.configure_session(renew: true)}
       {:error, reason} ->
         {:error, reason, conn}
     end
@@ -67,7 +67,7 @@ defmodule PhoenixBase.Auth do
     end
   end
 
-  defp update_login_metrics(tuple) do
+  defp update_login_metrics(tuple, conn) do
     case tuple do
       {:ok, user} ->
         user
@@ -87,7 +87,9 @@ defmodule PhoenixBase.Auth do
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->
             Task.async fn ->
-              # TODO Send lock out email
+              conn
+              |> Email.user_locked_out_email(user.id)
+              |> Mailer.deliver_now
             end
 
             {:error, :locked}

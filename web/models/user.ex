@@ -77,6 +77,12 @@ defmodule PhoenixBase.User do
     |> put_change(:verification_sent_at, nil)
   end
 
+  def unlock_account_changeset(user) do
+    user
+    |> put_change(:unlock_token, nil)
+    |> put_change(:locked_at, nil)
+  end
+
   defp put_confirmation_token(changeset) do
     if get_field(changeset, :confirmed_at) == nil do
       changeset

@@ -1,0 +1,7 @@
+<p>We have locked your account due to too many unsuccessful login attempts.</p>
+
+<p>To unlock your account please click on the following link:</p>
+
+<%= link to: unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) do %>
+  <%= unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) %>
+<% end %>

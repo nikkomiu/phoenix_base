@@ -39,4 +39,9 @@ defmodule PhoenixBase.UserStore do
       where: u.confirmation_token == ^token,
       preload: [:login]
   end
+
+  def find_by_unlock_token(token) do
+    Repo.one from u in User,
+      where: u.unlock_token == ^token
+  end
 end
