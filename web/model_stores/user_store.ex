@@ -33,4 +33,10 @@ defmodule PhoenixBase.UserStore do
       where: l.reset_token == ^token,
       preload: [:user]
   end
+
+  def find_by_confirmation_token(token) do
+    Repo.one from u in User,
+      where: u.confirmation_token == ^token,
+      preload: [:login]
+  end
 end

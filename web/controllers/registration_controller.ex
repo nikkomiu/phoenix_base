@@ -1,6 +1,8 @@
 defmodule PhoenixBase.RegistrationController do
   use PhoenixBase.Web, :controller
 
+  alias PhoenixBase.Email
+  alias PhoenixBase.Mailer
   alias PhoenixBase.User
   alias PhoenixBase.UserLogin
 
@@ -17,8 +19,15 @@ defmodule PhoenixBase.RegistrationController do
       |> User.registration_changeset(user_params)
 
     case Repo.insert(changeset) do
-      {:ok, _user} ->
+      {:ok, user} ->
+        Task.async fn ->
+          conn
+          |> Email.user_registration_confirmation_email(user.id)
+          |> Mailer.deliver_now
+        end
+
         conn
+        |> put_flash(:info, "Please check your email for confirmation instructions.")
         |> redirect(to: session_path(conn, :new))
       {:error, changeset} ->
         conn
@@ -27,9 +36,12 @@ defmodule PhoenixBase.RegistrationController do
   end
 
   def complete_registration(%{method: "GET"} = conn, %{"token" => token}) do
-    # TODO Verify token
+    user = PhoenixBase.UserStore.find_by_confirmation_token(token)
 
-    changeset = UserLogin.registration_changeset(%UserLogin{user_id: 1})
+    changeset =
+      user
+      |> Ecto.build_assoc(:login)
+      |> UserLogin.registration_changeset()
 
     conn
     |> render("complete_registration.html", changeset: changeset, token: token)
@@ -43,11 +55,22 @@ defmodule PhoenixBase.RegistrationController do
 
   def complete_registration(%{method: "POST"} = conn,
       %{"user_login" => %{"token" => token} = login_params}) do
-    # TODO Verify token
+    user = PhoenixBase.UserStore.find_by_confirmation_token(token)
 
-    changeset = UserLogin.registration_changeset(
-      %UserLogin{user_id: 1}, login_params
-    )
+    changeset =
+      user
+      |> Ecto.build_assoc(:login)
+      |> UserLogin.registration_changeset(login_params)
+
+    case Repo.insert(changeset) do
+      {:ok, _user_login} ->
+        conn
+        |> put_flash(:info, "Your account has been confirmed, you can now log in.")
+        |> redirect(to: session_path(conn, :new))
+      {:error, changeset} ->
+        conn
+        |> render("complete_registration.html", changeset: changeset, token: token)
+    end
 
     conn
     |> render("complete_registration.html", changeset: changeset, token: token)

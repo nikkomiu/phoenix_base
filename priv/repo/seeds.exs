@@ -20,13 +20,13 @@ defmodule SeedHelpers do
   def find_or_create(klass, field, %Ecto.Changeset{valid?: _} = changeset) do
     q =
       from x in klass,
-        where: field(x, ^field) == ^Ecto.Changeset.get_change(changeset, field, nil)
+        where: field(x, ^field) == ^Ecto.Changeset.get_field(changeset, field, nil)
 
     find_or_create(q, changeset)
   end
 
   def find_or_create(klass, field, model) do
-    q=
+    q =
       from x in klass,
         where: field(x, ^field) == ^Map.get(model, field)
 
@@ -47,9 +47,8 @@ user = SeedHelpers.find_or_create(User, :username,
 )
 
 SeedHelpers.find_or_create(UserLogin, :user_id,
-  UserLogin.registration_changeset(%UserLogin{}, %{
+  UserLogin.registration_changeset(%UserLogin{user_id: user.id}, %{
     password: "Password1",
     password_confirmation: "Password1",
-    user_id: user.id
   })
 )

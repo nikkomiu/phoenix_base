@@ -1,0 +1,7 @@
+<p>Thank you for signing up at Phoenix Base!</p>
+
+<p>Please click the following link to confirm your account and set your password:</p>
+
+<%= link to: unlock_url(@conn, :verify_account, %{token: @user.confirmation_token}) do %>
+  <%= unlock_url(@conn, :verify_account, %{token: @user.confirmation_token}) %>
+<% end %>

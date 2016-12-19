@@ -37,7 +37,12 @@ defmodule PhoenixBase.User do
 
   def email_changeset(user, params \\ %{}) do
     user
-    |> cast(params, [:verification_sent_at, :confirmed_at, :locked_at])
+    |> cast(params, [:verification_sent_at])
+  end
+
+  def locking_changeset(user, params \\ %{}) do
+    user
+    |> cast(params, [:confirmed_at, :locked_at])
   end
 
   def profile_changeset(user, params \\ %{}) do
@@ -59,13 +64,26 @@ defmodule PhoenixBase.User do
     |> cast(params, [:name, :username, :email])
     |> validate_required([:name, :username, :email])
     |> validate_format(:username, ~r/^[a-zA-Z0-9\.\-\_]*$/)
+    |> unique_constraint(:username)
+    |> unique_constraint(:email)
+    |> put_confirmation_token()
   end
 
-  def verify_email_changeset(%User{unverified_email: new_email}
-      = user) do
+  def verify_email_changeset(%User{unverified_email: new_email} = user) do
     user
     |> put_change(:email, new_email)
     |> put_change(:unverified_email, nil)
+    |> put_change(:verification_token, nil)
+    |> put_change(:verification_sent_at, nil)
+  end
+
+  defp put_confirmation_token(changeset) do
+    if get_field(changeset, :confirmed_at) == nil do
+      changeset
+      |> put_change(:confirmation_token, UUID.generate())
+    else
+      changeset
+    end
   end
 
   defp should_lock_account(changeset) do

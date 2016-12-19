@@ -12,7 +12,16 @@ defmodule PhoenixBase.Email do
     user.email
     |> setup
     |> subject("Finish Resetting your Phoenix Base Password")
-    |> render("reset_password.html", conn: conn, user: user, reset_token: user.login.reset_token)
+    |> render("reset_password.html", conn: conn, user: user)
+  end
+
+  def user_registration_confirmation_email(conn, user_id) do
+    user = PhoenixBase.UserStore.find_by_id(user_id)
+
+    user.email
+    |> setup
+    |> subject("Confirm Your Phoenix Base Account")
+    |> render("registration_confirmation.html", conn: conn, user: user)
   end
 
   defp setup(email_address) do
