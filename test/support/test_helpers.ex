@@ -23,9 +23,17 @@ defmodule PhoenixBase.TestHelpers do
       password_confirmation: "P@ssword1"
     }, attrs)
 
-    user
-    |> Ecto.build_assoc(:login)
-    |> UserLogin.registration_changeset(changes)
-    |> Repo.insert!()
+    changeset =
+      user
+      |> Ecto.build_assoc(:login)
+      |> UserLogin.registration_changeset(changes)
+
+    if attrs[:should_reset] == true do
+      changeset
+      |> UserLogin.reset_token_changeset()
+    else
+      changeset
+    end
+    |> Repo.insert!
   end
 end

@@ -26,8 +26,16 @@ defmodule PhoenixBase.Auth do
   end
 
   def forgot_password(conn, email) do
-    case UserStore.find_by_email(email) do
-      %User{} = user ->
+    user = UserStore.find_by_email(email)
+
+    cond do
+      user && user.locked_at != nil ->
+        {:error, :locked_out}
+
+      user && user.confirmed_at == nil ->
+        {:error, :unconfimred}
+
+      user && user.login ->
         changeset = UserLogin.reset_token_changeset(user.login)
 
         case Repo.update(changeset) do
@@ -46,19 +54,23 @@ defmodule PhoenixBase.Auth do
           {:error, _} ->
             {:error, :update_token}
         end
-      _ ->
+
+      user && user.login == nil ->
+        {:error, :no_password}
+
+      true ->
         {:error, :not_found}
     end
   end
 
   def user_login_from_reset_token(token) do
-    {uuid_status, uuid_token} = Ecto.UUID.cast(token)
+    uuid = Ecto.UUID.cast(token)
 
     cond do
-      uuid_status == :error ->
+      uuid == :error ->
         {:error, :invalid_format}
 
-      user_login = UserStore.find_user_login_by_reset_token(uuid_token) ->
+      user_login = UserStore.find_user_login_by_reset_token(token) ->
         # TODO verify that the token has not passed the expiration time
         {:ok, user_login}
 

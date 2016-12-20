@@ -1,5 +1,6 @@
 defmodule PhoenixBase.AuthTest do
   use PhoenixBase.ConnCase
+  use Bamboo.Test, shared: true
 
   alias PhoenixBase.Auth
   alias PhoenixBase.TestHelpers
@@ -44,6 +45,30 @@ defmodule PhoenixBase.AuthTest do
       Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
   end
 
+  test "login with too many failed attempts", %{conn: conn} do
+    user = TestHelpers.insert_user()
+    _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
+
+    login =
+      for _ <- 1..4 do
+        Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
+      end
+      |> List.last
+
+    assert {:error, :locked, _} = login
+  end
+
+  test "login with too many failed attempts sent lock out email", %{conn: conn} do
+    user = TestHelpers.insert_user()
+    _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
+
+    for _ <- 1..4 do
+      Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
+    end
+
+    assert_delivered_email PhoenixBase.Email.user_locked_out_email(conn, user.id)
+  end
+
   test "login with locked account", %{conn: conn} do
     user = TestHelpers.insert_user(locked_at: Ecto.DateTime.utc)
     user_login = TestHelpers.insert_user_login(user)
@@ -57,5 +82,70 @@ defmodule PhoenixBase.AuthTest do
 
     assert {:error, :unconfirmed, _conn} =
       Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "anypassword"})
+  end
+
+  test "forgot password with valid email", %{conn: conn} do
+    user = TestHelpers.insert_user()
+    _ = TestHelpers.insert_user_login(user)
+
+    assert {:ok, :scheduled} = Auth.forgot_password(conn, user.email)
+  end
+
+  test "forgot password sends email to user with token", %{conn: conn} do
+    user = TestHelpers.insert_user()
+    _ = TestHelpers.insert_user_login(user)
+
+    {:ok, :scheduled} = Auth.forgot_password(conn, user.email)
+
+    assert_delivered_email PhoenixBase.Email.user_reset_password_email(conn, user.id)
+  end
+
+  test "forgot password sets email sent to user with token"
+
+  test "forgot password with invalid email", %{conn: conn} do
+    _ = TestHelpers.insert_user(email: "some@somewhere.com")
+
+    assert {:error, :not_found} = Auth.forgot_password(conn, "notme@some.com")
+  end
+
+  test "forgot password with unconfirmed account", %{conn: conn} do
+    user = TestHelpers.insert_user(confirmed_at: nil)
+
+    assert {:error, :unconfimred} = Auth.forgot_password(conn, user.email)
+  end
+
+  test "forgot password with locked account", %{conn: conn} do
+    user = TestHelpers.insert_user(locked_at: Ecto.DateTime.utc)
+
+    assert {:error, :locked_out} = Auth.forgot_password(conn, user.email)
+  end
+
+  test "forgot password with locked account does not send email"
+  test "forgot password with unconfimred account does not send email"
+
+  test "get user login from reset token with valid token" do
+    user_login =
+      TestHelpers.insert_user()
+      |> TestHelpers.insert_user_login(should_reset: true)
+
+    {:ok, res} = Auth.user_login_from_reset_token(user_login.reset_token)
+
+    assert user_login.id == res.id
+  end
+
+  test "get user login from reset token with invalid token" do
+    _ =
+      TestHelpers.insert_user()
+      |> TestHelpers.insert_user_login(should_reset: true)
+
+    assert {:error, :not_found} = Auth.user_login_from_reset_token(Ecto.UUID.generate)
+  end
+
+  test "get user login from reset token with garbage token" do
+    _ =
+      TestHelpers.insert_user()
+      |> TestHelpers.insert_user_login(should_reset: true)
+
+    assert {:error, :invalid_format} = Auth.user_login_from_reset_token("myawesomefaketoken")
   end
 end

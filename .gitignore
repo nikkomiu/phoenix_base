@@ -23,6 +23,8 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 
+cover/excoveralls.html
+
 log/
 
 npm-debug.log*

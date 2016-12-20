@@ -15,5 +15,8 @@ config :phoenix_base, PhoenixBase.Repo,
   url: "ecto://postgres:postgres@postgres/phoenix_base_test",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :phoenix_base, PhoenixBase.Mailer,
+  adapter: Bamboo.TestAdapter
+
 config :exq,
   host: "redis"
