@@ -13,10 +13,10 @@ defmodule PhoenixBase.Repo.Migrations.CreateUser do
       add :sign_in_count, :integer, null: false, default: 0
       add :unverified_email, :string
       add :verification_token, :uuid
-      add :verification_sent_at, :datetime
+      add :verification_sent_at, :utc_datetime
       add :confirmation_token, :uuid
-      add :confirmed_at, :datetime
-      add :locked_at, :datetime
+      add :confirmed_at, :utc_datetime
+      add :locked_at, :utc_datetime
       add :unlock_token, :uuid
       add :failed_attempts, :integer, null: false, default: 0
 
@@ -37,7 +37,7 @@ defmodule PhoenixBase.Repo.Migrations.CreateUser do
 
     create table(:user_logins) do
       add :encrypted_password, :string, null: false
-      add :reset_sent, :datetime
+      add :reset_sent, :utc_datetime
       add :reset_token, :uuid
       add :user_id, references(:users, on_delete: :nothing), null: false
 
