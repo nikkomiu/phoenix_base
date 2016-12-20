@@ -1,7 +1,6 @@
 # Phoenix Base
 
 [![build status](https://gitlab.com/nikko.miu/phoenix_base/badges/master/build.svg)](https://gitlab.com/nikko.miu/phoenix_base/commits/master)
-
 [![coverage report](https://gitlab.com/nikko.miu/phoenix_base/badges/master/coverage.svg)](https://gitlab.com/nikko.miu/phoenix_base/commits/master)
 
 ## Installation
