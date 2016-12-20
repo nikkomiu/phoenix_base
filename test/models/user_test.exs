@@ -2,23 +2,37 @@ defmodule PhoenixBase.UserTest do
   use PhoenixBase.ModelCase
 
   # Login Changeset
-  test "login changeset sets failed attempts"
+  describe "login_changeset/2" do
+    test "login changeset sets failed attempts"
 
-  test "login changeset locks out after too many attempts"
+    test "login changeset locks out after too many attempts"
 
-  test "login changeset increments sign in count after successful attempt"
+    test "login changeset increments sign in count after successful attempt"
 
-  test "login changeset does not increment sign in count after failed attempt"
+    test "login changeset does not increment sign in count after failed attempt"
+  end
 
-  # Registration changeset
+  describe "registration_changeset/2" do
 
-  # Locking Changeset
+  end
 
-  # Profile Changeset
+  describe "locking_changeset/2" do
 
-  # Email changeset
+  end
 
-  # Verify Email Changeset
+  describe "profile_changeset/2" do
 
-  # Unlock Account Changeset
+  end
+
+  describe "email_changeset/2" do
+
+  end
+
+  describe "verify_email_changeset/1" do
+
+  end
+
+  describe "unlock_account_changeset/1" do
+
+  end
 end
