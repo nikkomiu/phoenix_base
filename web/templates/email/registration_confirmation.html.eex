@@ -2,6 +2,6 @@
 
 <p>Please click the following link to confirm your account and set your password:</p>
 
-<%= link to: unlock_url(@conn, :verify_account, %{token: @user.confirmation_token}) do %>
-  <%= unlock_url(@conn, :verify_account, %{token: @user.confirmation_token}) %>
+<%= link to: registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) do %>
+  <%= registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) %>
 <% end %>

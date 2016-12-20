@@ -1,13 +1,12 @@
 defmodule PhoenixBase.Email do
   use Bamboo.Phoenix, view: PhoenixBase.EmailView
 
-  alias PhoenixBase.User
-  alias PhoenixBase.UserLogin
+  alias PhoenixBase.UserStore
 
   @moduledoc false
 
   def user_reset_password_email(conn, user_id) do
-    user = PhoenixBase.UserStore.find_by_id(user_id)
+    user = UserStore.find_by_id(user_id)
 
     user.email
     |> setup
@@ -16,7 +15,7 @@ defmodule PhoenixBase.Email do
   end
 
   def user_registration_confirmation_email(conn, user_id) do
-    user = PhoenixBase.UserStore.find_by_id(user_id)
+    user = UserStore.find_by_id(user_id)
 
     user.email
     |> setup
@@ -25,7 +24,7 @@ defmodule PhoenixBase.Email do
   end
 
   def user_locked_out_email(conn, user_id) do
-    user = PhoenixBase.UserStore.find_by_id(user_id)
+    user = UserStore.find_by_id(user_id)
 
     user.email
     |> setup

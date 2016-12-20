@@ -105,9 +105,9 @@ defmodule PhoenixBase.Auth do
     cond do
       user && user.locked_at != nil ->
         {:error, :locked}
-      user && user.confirmed_at != nil ->
+      user && user.confirmed_at == nil ->
         {:error, :unconfirmed}
-      user && checkpw(password, user.login.encrypted_password) ->
+      user && user.login && checkpw(password, user.login.encrypted_password) ->
         {:ok, user}
       user ->
         {:error, :unauthorized, user}

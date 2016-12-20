@@ -74,7 +74,8 @@ defmodule PhoenixBase.RegistrationController do
       end
     else
       conn
-      |> render("complete_registration.html", changeset: changeset, token: token)
+      |> put_flash(:error, "Could not verify token.")
+      |> redirect(to: session_path(conn, :new))
     end
   end
 end

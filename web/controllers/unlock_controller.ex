@@ -10,16 +10,16 @@ defmodule PhoenixBase.UnlockController do
 
   def forgot_password_submit(conn, %{"session" => %{"email" => email}}) do
     case Auth.forgot_password(conn, email) do
+      {:error, :update_token} ->
+        conn
+        |> put_flash(:info, "Could not send email. Please try again later.")
+        |> render("forgot_password.html")
       _ ->
         conn
         |> put_flash(:info,
           "If an account with that email exists " <>
           "reset instructions have been sent to you.")
         |> redirect(to: session_path(conn, :new))
-      {:error, :update_token} ->
-        conn
-        |> put_flash(:info, "Password reset instructions have been sent to you.")
-        |> render("forgot_password.html")
     end
   end
 
@@ -74,7 +74,7 @@ defmodule PhoenixBase.UnlockController do
         {:ok, _user} ->
           conn
           |> put_flash(:info, "Your account has been successfully unlocked.")
-        {:error, changeset} ->
+        {:error, _changeset} ->
           conn
           |> put_flash(:error, "Could not unlock account. " <>
               "Please try again or contact your administrator.")
