@@ -38,8 +38,17 @@ defmodule PhoenixBase.UserLogin do
     |> validate_required([:password, :password_confirmation])
     |> assoc_constraint(:user)
     |> validate_confirmation(:password)
+    |> validate_password_requirements()
     |> put_encrypted_password()
     |> remove_reset_token()
+  end
+
+  defp validate_password_requirements(changeset) do
+    changeset
+    |> validate_length(:password, min: 8, max: 50)
+    |> validate_format(:password, ~r/(?=.*\d)/, message: "must contain a number")
+    |> validate_format(:password, ~r/(?=.*[a-z])/, message: "must contain a lowercase letter")
+    |> validate_format(:password, ~r/(?=.*[A-Z])/, message: "must contain a capital letter")
   end
 
   defp put_reset_token(changeset) do

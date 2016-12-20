@@ -38,7 +38,7 @@ defmodule PhoenixBase.AuthTest do
 
   test "login with password mismatch", %{conn: conn} do
     user = TestHelpers.insert_user()
-    _ = TestHelpers.insert_user_login(user, %{password: "rightpassword", password_confirmation: "rightpassword"})
+    _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
 
     assert {:error, :unauthorized, _conn} =
       Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})

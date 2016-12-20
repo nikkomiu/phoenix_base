@@ -6,7 +6,7 @@ defmodule PhoenixBase.TestHelpers do
   def insert_user(attrs \\ %{}) do
     changes = Dict.merge(%{
       name: "Test User",
-      username: "user_#{Base.encode16(:crypto.rand_bytes(8))}",
+      username: "user_#{Base.encode16(:crypto.strong_rand_bytes(8))}",
       email: "test.user@nikkomiu.com",
       confirmed_at: Ecto.DateTime.utc()
     }, attrs)
@@ -19,8 +19,8 @@ defmodule PhoenixBase.TestHelpers do
 
   def insert_user_login(%User{} = user, attrs \\ %{}) do
     changes = Dict.merge(%{
-      password: "Password1",
-      password_confirmation: "Password1"
+      password: "P@ssword1",
+      password_confirmation: "P@ssword1"
     }, attrs)
 
     user

@@ -39,7 +39,7 @@ defmodule PhoenixBase.Repo.Migrations.CreateUser do
       add :encrypted_password, :string, null: false
       add :reset_sent, :datetime
       add :reset_token, :uuid
-      add :user_id, references(:users, on_delete: :nothing)
+      add :user_id, references(:users, on_delete: :nothing), null: false
 
       timestamps()
     end

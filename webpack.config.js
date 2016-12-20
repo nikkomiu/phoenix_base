@@ -14,7 +14,7 @@ const base = {
       "./web/static/sass/app.scss",
       "./web/static/js/app.js"
     ],
-    vendor: ["jquery", "tether"]
+    vendor: ["jquery", "tether", "phoenix", "phoenix_html"]
   },
 
   output: {
@@ -23,7 +23,7 @@ const base = {
   },
 
   resoluve: {
-    moduleDirectories: ["node_modules", __dirname + "/web/static/js"]
+    moduleDirectories: [__dirname + "/web/static/js", "node_modules"]
   },
 
   module: {
@@ -31,7 +31,7 @@ const base = {
       {
         // Babel JS Loader
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: "babel",
         query: {
           presets: ["es2015"]
