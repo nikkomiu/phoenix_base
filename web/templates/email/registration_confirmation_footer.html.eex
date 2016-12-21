@@ -1,0 +1,7 @@
+<p style="font-size:10px">
+  If the button does not work for you copy and paste the following url into your browser:
+  <br />
+  <%= link to: registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) do %>
+    <%= registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) %>
+  <% end %>
+</p>

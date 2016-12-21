@@ -1,7 +1,7 @@
 <p>We have locked your account due to too many unsuccessful login attempts.</p>
 
-<p>To unlock your account please click on the following link:</p>
+<p>Please click on the following button to unlock your account:</p>
 
-<%= link to: unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) do %>
-  <%= unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) %>
-<% end %>
+<%= render PhoenixBase.EmailView, "_button.html",
+      href: unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}),
+      text: "Unlock account" %>

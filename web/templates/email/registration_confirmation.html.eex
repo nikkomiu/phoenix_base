@@ -5,9 +5,3 @@
 <%= render PhoenixBase.EmailView, "_button.html",
       href: registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}),
       text: "Complete registration" %>
-
-<p>If the button above does not work for you copy and paste the following url into your browser:</p>
-
-<%= link to: registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) do %>
-  <%= registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}) %>
-<% end %>

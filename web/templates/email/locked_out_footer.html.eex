@@ -1,0 +1,7 @@
+<p style="font-size:10px">
+  If the button does not work for you copy and paste the following url into your browser:
+  <br />
+  <%= link to: unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) do %>
+    <%= unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}) %>
+  <% end %>
+</p>
