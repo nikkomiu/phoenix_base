@@ -19,48 +19,20 @@ defmodule PhoenixBase.Auth do
     |> update_login_metrics(conn)
     |> case do
       {:ok, user} ->
-        {:ok, sign_in(conn, user) |> Plug.Conn.configure_session(renew: true)}
+        {
+          :ok,
+          conn
+          |> sign_in(user)
+          |> Plug.Conn.configure_session(renew: true)
+        }
       {:error, reason} ->
         {:error, reason, conn}
     end
   end
 
   def forgot_password(conn, email) do
-    user = UserStore.find_by_email(email)
-
-    cond do
-      user && user.locked_at != nil ->
-        {:error, :locked_out}
-
-      user && user.confirmed_at == nil ->
-        {:error, :unconfimred}
-
-      user && user.login ->
-        changeset = UserLogin.reset_token_changeset(user.login)
-
-        case Repo.update(changeset) do
-          {:ok, user_login} ->
-            task = Task.async fn ->
-              conn
-              |> Email.user_reset_password_email(user.id)
-              |> Mailer.deliver_now
-
-              user_login
-              |> UserLogin.email_changeset(%{reset_sent: Ecto.DateTime.utc})
-              |> Repo.update!
-            end
-
-            {:ok, :scheduled, task}
-          {:error, _} ->
-            {:error, :update_token}
-        end
-
-      user && user.login == nil ->
-        {:error, :no_password}
-
-      true ->
-        {:error, :not_found}
-    end
+    conn
+    |> forgot_password_check(UserStore.find_by_email(email))
   end
 
   def user_login_from_reset_token(token) do
@@ -98,11 +70,7 @@ defmodule PhoenixBase.Auth do
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->
-            Task.async fn ->
-              conn
-              |> Email.user_locked_out_email(user.id)
-              |> Mailer.deliver_now
-            end
+            send_lock_out_email_async(conn, user.id)
 
             {:error, :locked}
           _ ->
@@ -113,19 +81,69 @@ defmodule PhoenixBase.Auth do
     end
   end
 
-  defp verify_access(user, password) do
+  defp forgot_password_check(conn, %User{} = user) do
     cond do
-      user && user.locked_at != nil ->
-        {:error, :locked}
-      user && user.confirmed_at == nil ->
-        {:error, :unconfirmed}
-      user && user.login && checkpw(password, user.login.encrypted_password) ->
-        {:ok, user}
-      user ->
-        {:error, :unauthorized, user}
-      true ->
-        dummy_checkpw()
-        {:error, :not_found}
+      user.locked_at != nil ->
+        {:error, :locked_out}
+
+      user.confirmed_at == nil ->
+        {:error, :unconfimred}
+
+      user.login ->
+        changeset = UserLogin.reset_token_changeset(user.login)
+
+        case Repo.update(changeset) do
+          {:ok, user_login} ->
+            task = send_reset_password_email_async(conn, user_login)
+
+            {:ok, :scheduled, task}
+          {:error, _} ->
+            {:error, :update_token}
+        end
+
+      user.login == nil ->
+        {:error, :no_password}
     end
+  end
+
+  defp forgot_password_check(_, _), do: {:error, :not_found}
+
+  defp send_reset_password_email_async(conn, user_login) do
+    Task.async fn ->
+      conn
+      |> Email.user_reset_password_email(user_login.user_id)
+      |> Mailer.deliver_now
+
+      user_login
+      |> UserLogin.email_changeset(%{reset_sent: Ecto.DateTime.utc})
+      |> Repo.update!
+    end
+  end
+
+  defp send_lock_out_email_async(conn, user_id) do
+    Task.async fn ->
+      conn
+      |> Email.user_locked_out_email(user_id)
+      |> Mailer.deliver_now
+    end
+  end
+
+  defp verify_access(%User{} = user, password) do
+    cond do
+      user.locked_at != nil ->
+        {:error, :locked}
+      user.confirmed_at == nil ->
+        {:error, :unconfirmed}
+      user.login && checkpw(password, user.login.encrypted_password) ->
+        {:ok, user}
+      true ->
+        {:error, :unauthorized, user}
+    end
+  end
+
+  defp verify_access(_, _) do
+    dummy_checkpw()
+
+    {:error, :not_found}
   end
 end

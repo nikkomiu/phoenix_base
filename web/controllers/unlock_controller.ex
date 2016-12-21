@@ -33,18 +33,19 @@ defmodule PhoenixBase.UnlockController do
 
       {:error, _} ->
         conn
-        |> put_flash(:error, "The token was either not found or has expired. "<>
-          "Please request a new password reset token.")
+        |> expired_token_flash
         |> redirect(to: session_path(conn, :new))
     end
   end
 
   def password_reset(conn, _params), do: bad_link(conn)
 
-  def complete_password_reset(conn, %{"user_login" => %{"token" => token} = reset_params}) do
+  def complete_password_reset(conn, %{"user_login" =>
+      %{"token" => token} = reset_params}) do
     case Auth.user_login_from_reset_token(token) do
       {:ok, user_login} ->
-        changeset = PhoenixBase.UserLogin.registration_changeset(user_login, reset_params)
+        changeset =
+          PhoenixBase.UserLogin.registration_changeset(user_login, reset_params)
 
         case PhoenixBase.Repo.update(changeset) do
           {:ok, _} ->
@@ -57,8 +58,7 @@ defmodule PhoenixBase.UnlockController do
         end
       {:error, _} ->
         conn
-        |> put_flash(:error, "The token was either not found or has expired. "<>
-          "Please request a new password reset token.")
+        |> expired_token_flash
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -66,7 +66,8 @@ defmodule PhoenixBase.UnlockController do
   def unlock_account(conn, %{"token" => token}) do
     user = PhoenixBase.UserStore.find_by_unlock_token(token)
 
-    if user do
+    user
+    |> if do
       user
       |> PhoenixBase.User.unlock_account_changeset()
       |> PhoenixBase.Repo.update()
@@ -93,4 +94,8 @@ defmodule PhoenixBase.UnlockController do
     |> put_flash(:error, "Please be sure to follow the link in your email.")
     |> redirect(to: session_path(conn, :new))
   end
+
+  defp expired_token_flash(conn), do:
+    put_flash(conn, :error, "The token was either not found or has expired. " <>
+      "Please request a new password reset token.")
 end

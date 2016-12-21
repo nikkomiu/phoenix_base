@@ -15,15 +15,14 @@ defmodule PhoenixBase.UserHelper do
     opts = [size: 200] |> Keyword.merge(opts) |> Enum.into(%{})
 
     "https://www.gravatar.com/avatar/" <>
-    (cond do
+    cond do
       user = opts[:user] ->
-        user.email
+        user.email |> md5_hash
       user = current_user(conn) ->
-        user.email
+        user.email |> md5_hash
       true ->
-        ""
+        "" |> md5_hash
     end
-    |> md5_hash)
     <> "?d=mm&s=#{opts.size}"
   end
 

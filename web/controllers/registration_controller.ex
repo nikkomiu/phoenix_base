@@ -27,7 +27,8 @@ defmodule PhoenixBase.RegistrationController do
         end
 
         conn
-        |> put_flash(:info, "Please check your email for confirmation instructions.")
+        |> put_flash(:info,
+            "Please check your email for confirmation instructions.")
         |> redirect(to: session_path(conn, :new))
       {:error, changeset} ->
         conn
@@ -66,11 +67,13 @@ defmodule PhoenixBase.RegistrationController do
       case Repo.insert(changeset) do
         {:ok, _user_login} ->
           conn
-          |> put_flash(:info, "Your account has been confirmed, you can now log in.")
+          |> put_flash(:info,
+              "Your account has been confirmed, you can now log in.")
           |> redirect(to: session_path(conn, :new))
         {:error, changeset} ->
           conn
-          |> render("complete_registration.html", changeset: changeset, token: token)
+          |> render("complete_registration.html",
+              changeset: changeset, token: token)
       end
     else
       conn
