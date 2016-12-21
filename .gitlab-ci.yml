@@ -32,7 +32,6 @@ test:
     - compile
   services:
     - postgres:latest
-    - redis:latest
   script:
     - mix test
 
@@ -57,7 +56,6 @@ test_coverage:
     - compile
   services:
     - postgres:latest
-    - redis:latest
   script:
     - mix coveralls
 
@@ -67,14 +65,12 @@ migratability:
     - compile
   services:
     - postgres:latest
-    - redis:latest
   before_script:
     - chmod +x deploy/db_migratable.sh
   script:
     - deploy/db_migratable.sh
   except:
     - tags
-  allow_failure: true
 
 mergability:
   stage: test

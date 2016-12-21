@@ -17,6 +17,3 @@ config :phoenix_base, PhoenixBase.Repo,
 
 config :phoenix_base, PhoenixBase.Mailer,
   adapter: Bamboo.TestAdapter
-
-config :exq,
-  host: "redis"

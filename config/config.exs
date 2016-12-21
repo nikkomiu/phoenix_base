@@ -19,14 +19,17 @@ config :phoenix_base, PhoenixBase.Endpoint,
 
 # Configures the email service
 config :phoenix_base, PhoenixBase.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "smtp.mailgun.org",
-  port: 465,
-  username: "testing@sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org",
-  password: "password1",
-  tls: :if_available, # also :always or :never
-  ssl: true,
-  retries: 3
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-1686c5af83978895069b50b025f2fb2b",
+  domain: "sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org"
+#  adapter: Bamboo.SMTPAdapter,
+#  server: "smtp.mailgun.org",
+#  port: 465,
+#  username: "testing@sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org",
+#  password: "password1",
+#  tls: :if_available, # also :always or :never
+#  ssl: true,
+#  retries: 3
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -42,15 +45,6 @@ config :guardian, Guardian,
 config :phoenix, :template_engines,
   slim: PhoenixSlime.Engine,
   slime: PhoenixSlime.Engine
-
-config :exq,
-  name: Exq,
-  host: "localhost",
-  port: 6379,
-  namespace: "exq",
-  concurrency: :infinite,
-  queues: ["default", "email"],
-  max_retries: 25
 
 config :distillery,
   no_warn_missing: [

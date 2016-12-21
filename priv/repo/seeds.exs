@@ -39,7 +39,7 @@ defmodule SeedHelpers do
 end
 
 user = SeedHelpers.find_or_create(User, :username,
-  User.registration_changeset(%User{}, %{
+  User.registration_changeset(%User{confirmed_at: Ecto.DateTime.utc}, %{
     name: "Nikko Miu",
     email: "nikkoamiu@gmail.com",
     username: "nikko.miu"
