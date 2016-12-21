@@ -131,9 +131,6 @@ defmodule PhoenixBase.AuthTest do
 
       assert {:error, :locked_out} = Auth.forgot_password(conn, user.email)
     end
-
-    # test "forgot password with locked account does not send email"
-    # test "forgot password with unconfimred account does not send email"
   end
 
   describe "user_login_from_reset_token/1" do
