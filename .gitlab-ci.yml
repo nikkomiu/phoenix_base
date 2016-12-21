@@ -71,7 +71,7 @@ migratability:
   before_script:
     - chmod +x deploy/db_migratable.sh
   script:
-    - deploy/db_migratable.sh
+    - MIX_ENV=test deploy/db_migratable.sh
   except:
     - tags
   allow_failure: true
