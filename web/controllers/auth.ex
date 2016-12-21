@@ -40,7 +40,7 @@ defmodule PhoenixBase.Auth do
 
         case Repo.update(changeset) do
           {:ok, user_login} ->
-            Task.async fn ->
+            task = Task.async fn ->
               conn
               |> Email.user_reset_password_email(user.id)
               |> Mailer.deliver_now
@@ -50,7 +50,7 @@ defmodule PhoenixBase.Auth do
               |> Repo.update!
             end
 
-            {:ok, :scheduled}
+            {:ok, :scheduled, task}
           {:error, _} ->
             {:error, :update_token}
         end

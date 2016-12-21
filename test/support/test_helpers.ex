@@ -4,10 +4,11 @@ defmodule PhoenixBase.TestHelpers do
   alias PhoenixBase.UserLogin
 
   def insert_user(attrs \\ %{}) do
+    rand = Base.encode16(:crypto.strong_rand_bytes(8))
     changes = Dict.merge(%{
       name: "Test User",
-      username: "user_#{Base.encode16(:crypto.strong_rand_bytes(8))}",
-      email: "test.user@nikkomiu.com",
+      username: "user_#{rand}",
+      email: "test.user_#{rand}@nikkomiu.com",
       confirmed_at: Ecto.DateTime.utc()
     }, attrs)
 
@@ -35,5 +36,9 @@ defmodule PhoenixBase.TestHelpers do
       changeset
     end
     |> Repo.insert!
+  end
+
+  def find_user_login_by_id(id) do
+    Repo.get(UserLogin, id)
   end
 end

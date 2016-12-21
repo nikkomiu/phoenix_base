@@ -20,7 +20,7 @@ defmodule PhoenixBase.SessionControllerTest do
       assert html_response(conn, 200) =~ "Sign in</button>"
     end
 
-    test "get login page when logged in"
+    # test "get login page when logged in"
   end
 
   describe "delete/2" do

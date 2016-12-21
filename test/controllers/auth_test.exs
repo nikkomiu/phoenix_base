@@ -91,19 +91,28 @@ defmodule PhoenixBase.AuthTest do
       user = TestHelpers.insert_user()
       _ = TestHelpers.insert_user_login(user)
 
-      assert {:ok, :scheduled} = Auth.forgot_password(conn, user.email)
+      assert {:ok, :scheduled, _} = Auth.forgot_password(conn, user.email)
     end
 
     test "forgot password sends email to user with token", %{conn: conn} do
       user = TestHelpers.insert_user()
       _ = TestHelpers.insert_user_login(user)
 
-      {:ok, :scheduled} = Auth.forgot_password(conn, user.email)
+      {:ok, :scheduled, _} = Auth.forgot_password(conn, user.email)
 
       assert_delivered_email PhoenixBase.Email.user_reset_password_email(conn, user.id)
     end
 
-    test "forgot password sets email sent with valid email"
+    test "forgot password sets email sent with valid email", %{conn: conn} do
+      user = TestHelpers.insert_user()
+      user_login = TestHelpers.insert_user_login(user)
+
+      {:ok, :scheduled, task} = Auth.forgot_password(conn, user.email)
+
+      Task.await(task)
+
+      assert TestHelpers.find_user_login_by_id(user_login.id).reset_sent != nil
+    end
 
     test "forgot password with invalid email", %{conn: conn} do
       _ = TestHelpers.insert_user(email: "some@somewhere.com")
@@ -123,8 +132,8 @@ defmodule PhoenixBase.AuthTest do
       assert {:error, :locked_out} = Auth.forgot_password(conn, user.email)
     end
 
-    test "forgot password with locked account does not send email"
-    test "forgot password with unconfimred account does not send email"
+    # test "forgot password with locked account does not send email"
+    # test "forgot password with unconfimred account does not send email"
   end
 
   describe "user_login_from_reset_token/1" do
