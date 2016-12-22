@@ -1,5 +1,8 @@
-$brand-primary: #0275d8;
-$brand-primary-lighter: desaturate(lighten($brand-primary, 52%), 40%);
+//$brand-primary: #0275d8;
+//$brand-primary-lighter: desaturate(lighten($brand-primary, 52%), 40%);
+
+$brand-primary: #613a85;
+$brand-primary-lighter: desaturate(lighten($brand-primary, 52%), 15%);
 
 $body-bg: #FBFBFB;
 
@@ -9,6 +12,9 @@ $navbar-padding-y: 0.325rem;
 
 /* Forms */
 $input-bg-focus: $brand-primary-lighter;
+
+/* Inputs */
+$input-border-focus: $brand-primary;
 
 /* Alerts */
 $alert-border-radius: 0;

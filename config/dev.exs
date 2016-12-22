@@ -37,5 +37,5 @@ config :phoenix_base, PhoenixBase.Repo,
   username: "postgres",
   password: "postgres",
   database: "phoenix_base_dev",
-  hostname: "localhost",
+  hostname: "postgres",
   pool_size: 10
