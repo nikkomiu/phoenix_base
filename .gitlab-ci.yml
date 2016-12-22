@@ -57,6 +57,7 @@ test_coverage:
   services:
     - postgres:latest
   script:
+    - mix coveralls --token WpctDLYNh2iGqETm7lb6loQbwwAuUyuEK --branch $CI_BUILD_REF_NAME --name "GitLab CI" --committer $GITLAB_USER_EMAIL --sha $CI_BUILD_REF --message `git log -1 --pretty=%B`
     - mix coveralls
 
 migratability:
