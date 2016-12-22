@@ -19,14 +19,16 @@ defmodule PhoenixBase.Auth do
     |> update_login_metrics(conn)
     |> case do
       {:ok, user} ->
-        {
-          :ok,
+        conn =
           conn
           |> sign_in(user)
           |> Plug.Conn.configure_session(renew: true)
-        }
+
+        {:ok, conn}
+      {:error, reason, task} ->
+        {:error, reason, task}
       {:error, reason} ->
-        {:error, reason, conn}
+        {:error, reason}
     end
   end
 
@@ -70,9 +72,9 @@ defmodule PhoenixBase.Auth do
 
         case changeset do
           %Ecto.Changeset{changes: %{locked_at: _locked}} ->
-            send_lock_out_email_async(conn, user.id)
+            task = send_lock_out_email_async(conn, user.id)
 
-            {:error, :locked}
+            {:error, :locked, task}
           _ ->
             {:error, :unauthorized}
         end
@@ -131,7 +133,7 @@ defmodule PhoenixBase.Auth do
   defp verify_access(%User{} = user, password) do
     cond do
       user.locked_at != nil ->
-        {:error, :locked}
+        {:error, :locked, nil}
       user.confirmed_at == nil ->
         {:error, :unconfirmed}
       user.login && checkpw(password, user.login.encrypted_password) ->

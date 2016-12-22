@@ -34,7 +34,7 @@ defmodule PhoenixBase.AuthTest do
     end
 
     test "login with not found user", %{conn: _conn} do
-      assert {:error, :not_found, _conn} =
+      assert {:error, :not_found} =
         Auth.login_by_user_and_password(build_conn, %{"username" => "me", "password" => "wrong"})
     end
 
@@ -42,7 +42,7 @@ defmodule PhoenixBase.AuthTest do
       user = TestHelpers.insert_user()
       _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
 
-      assert {:error, :unauthorized, _conn} =
+      assert {:error, :unauthorized} =
         Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
     end
 
@@ -50,22 +50,29 @@ defmodule PhoenixBase.AuthTest do
       user = TestHelpers.insert_user()
       _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
 
-      login =
-        for _ <- 1..4 do
+      task =
+        for _ <- 1..5 do
           Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
         end
         |> List.last
 
-      assert {:error, :locked, _} = login
+      assert {:error, :locked, _} = task
     end
 
     test "login with too many failed attempts sent lock out email", %{conn: conn} do
       user = TestHelpers.insert_user()
       _ = TestHelpers.insert_user_login(user, %{password: "R!ghtP@ss1", password_confirmation: "R!ghtP@ss1"})
 
-      for _ <- 1..4 do
-        Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"})
+      for _ <- 1..10 do
+        case Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "wrong"}) do
+          {:error, :locked, task} ->
+            task
+          _ ->
+            nil
+        end
       end
+      |> List.last
+      |> IO.puts
 
       assert_delivered_email PhoenixBase.Email.user_locked_out_email(conn, user.id)
     end
@@ -81,7 +88,7 @@ defmodule PhoenixBase.AuthTest do
     test "login with unconfirmed account", %{conn: conn} do
       user = TestHelpers.insert_user(confirmed_at: nil)
 
-      assert {:error, :unconfirmed, _conn} =
+      assert {:error, :unconfirmed} =
         Auth.login_by_user_and_password(conn, %{"username" => user.username, "password" => "anypassword"})
     end
   end
