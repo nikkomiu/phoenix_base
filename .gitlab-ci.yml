@@ -71,6 +71,7 @@ migratability:
     - deploy/db_migratable.sh
   except:
     - tags
+  allow_failure: true
 
 mergability:
   stage: test
