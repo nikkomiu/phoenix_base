@@ -31,10 +31,14 @@ defmodule PhoenixBase.Endpoint do
   plug Plug.Head
 
   plug :put_secret_key_base
-  defp put_secret_key_base(%{secret_key_base: ""} = conn, _), do:
-    put_in conn.secret_key_base, config_or_default(:secret_key_base,
-        System.get_env("SECRET_KEY_BASE"))
-  defp put_secret_key_base(conn, _), do: conn
+  defp put_secret_key_base(%{secret_key_base: key} = conn, _) do
+    case key do
+      {:system, sys_var} ->
+        put_in conn.secret_key_base, System.get_env(sys_var)
+      _ ->
+        conn
+    end
+  end
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -45,13 +49,4 @@ defmodule PhoenixBase.Endpoint do
     signing_salt: "/kWZJ4XT"
 
   plug PhoenixBase.Router
-
-  defp config_or_default(key, default) do
-    case Application.fetch_env(:phoenix_base, key) do
-      :error ->
-        default
-      {:ok, data} ->
-        data
-    end
-  end
 end

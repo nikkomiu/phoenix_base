@@ -7,9 +7,6 @@ global.Tether = require('tether')
 require('jquery.ns-autogrow')
 require('bootstrap')
 
-import Timer from "./timer"
-const pageTimers = new Timer({listener: 'turbolinks:load'});
-
 // Page Load Event Handler
 $(document).on("turbolinks:load", function() {
   $('.alert').on('click', function() {
@@ -22,5 +19,8 @@ $(document).on("turbolinks:load", function() {
     flickering: false
   });
 });
+
+// import Timer from "./timer"
+// const pageTimers = new Timer({listener: 'turbolinks:load'});
 
 // import socket from "./socket"

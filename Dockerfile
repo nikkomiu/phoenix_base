@@ -1,6 +1,6 @@
 FROM debian:jessie-slim
 
-# WARNING: This expects there to be a release in the rel directory
+# WARNING: This expects there to be a release in the _build/prod/rel/ directory
 
 MAINTAINER Nikko Miu <nikkoamiu@gmail.com>
 
@@ -25,8 +25,8 @@ ENV SECRET_KEY_BASE=xeqWUJ03Yx7JQ+if21rLBKIZ6cZKMyp3hcJYuC3U0NDQKe1APerQ3F5rD/E3
 ENV DATABASE_URL=ecto://postgres:postgres@192.168.99.100/phoenix_base_prod
 ENV PORT=8080
 
-# Expose NGINX port
+# Expose app port
 EXPOSE $PORT
 
-# Run startup script
-CMD ["./bin/phoenix_base", "foreground"]
+# Start app
+ENTRYPOINT ["./bin/phoenix_base", "foreground"]

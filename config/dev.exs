@@ -40,5 +40,5 @@ config :phoenix_base, PhoenixBase.Mailer,
 # Configure your database
 config :phoenix_base, PhoenixBase.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: "ecto://postgres:postgres@postgres/phoenix_base_dev"
+  url: "ecto://postgres:postgres@postgres/phoenix_base_dev",
   pool_size: 10
