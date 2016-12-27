@@ -31,6 +31,12 @@ config :logger, :console, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
+# Configures the email service
+config :phoenix_base, PhoenixBase.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-1686c5af83978895069b50b025f2fb2b",
+  domain: "sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org"
+
 # Configure your database
 config :phoenix_base, PhoenixBase.Repo,
   adapter: Ecto.Adapters.Postgres,
