@@ -17,20 +17,6 @@ config :phoenix_base, PhoenixBase.Endpoint,
   pubsub: [name: PhoenixBase.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-# Configures the email service
-config :phoenix_base, PhoenixBase.Mailer,
-  adapter: Bamboo.MailgunAdapter,
-  api_key: "key-1686c5af83978895069b50b025f2fb2b",
-  domain: "sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org"
-#  adapter: Bamboo.SMTPAdapter,
-#  server: "smtp.mailgun.org",
-#  port: 465,
-#  username: "testing@sandbox979dea49d3524660b545b6de0cd7812e.mailgun.org",
-#  password: "password1",
-#  tls: :if_available, # also :always or :never
-#  ssl: true,
-#  retries: 3
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
