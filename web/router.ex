@@ -26,6 +26,11 @@ defmodule PhoenixBase.Router do
     plug :accepts, ["json"]
   end
 
+  # DEV Only Routes
+  if Mix.env == :dev do
+    forward "/sent-emails", Bamboo.EmailPreviewPlug
+  end
+
   scope "/", PhoenixBase do
     pipe_through [:browser]
 

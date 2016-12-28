@@ -2,6 +2,6 @@
 
 <p>Please click on the following button to unlock your account:</p>
 
-<%= render PhoenixBase.EmailView, "_button.html",
+<%= render PhoenixBase.Email.UserView, "_button.html",
       href: unlock_url(@conn, :unlock_account, %{token: @user.unlock_token}),
       text: "Unlock account" %>

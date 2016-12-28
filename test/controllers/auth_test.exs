@@ -74,7 +74,7 @@ defmodule PhoenixBase.AuthTest do
       |> List.last
       |> IO.puts
 
-      assert_delivered_email PhoenixBase.Email.user_locked_out_email(conn, user.id)
+      assert_delivered_email PhoenixBase.Email.UserEmail.user_locked_out_email(conn, user.id)
     end
 
     test "login with locked account", %{conn: conn} do
@@ -107,7 +107,7 @@ defmodule PhoenixBase.AuthTest do
 
       {:ok, :scheduled, _} = Auth.forgot_password(conn, user.email)
 
-      assert_delivered_email PhoenixBase.Email.user_reset_password_email(conn, user.id)
+      assert_delivered_email PhoenixBase.Email.UserEmail.user_reset_password_email(conn, user.id)
     end
 
     test "forgot password sets email sent with valid email", %{conn: conn} do

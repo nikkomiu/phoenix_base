@@ -41,7 +41,7 @@ defmodule PhoenixBase.RegistrationControllerTest do
 
       user = PhoenixBase.UserStore.find_by_email("test.user@test.com")
 
-      assert_delivered_email PhoenixBase.Email.user_registration_confirmation_email(conn, user.id)
+      assert_delivered_email PhoenixBase.Email.UserEmail.user_registration_confirmation_email(conn, user.id)
     end
 
     # test "register user without name"

@@ -1,7 +1,7 @@
 defmodule PhoenixBase.Auth.RegistrationController do
   use PhoenixBase.Web, :controller
 
-  alias PhoenixBase.Email
+  alias PhoenixBase.Email.UserEmail
   alias PhoenixBase.Mailer
   alias PhoenixBase.User
   alias PhoenixBase.UserLogin
@@ -22,7 +22,7 @@ defmodule PhoenixBase.Auth.RegistrationController do
       {:ok, user} ->
         Task.async fn ->
           conn
-          |> Email.user_registration_confirmation_email(user.id)
+          |> UserEmail.user_registration_confirmation_email(user.id)
           |> Mailer.deliver_now
         end
 

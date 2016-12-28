@@ -1,5 +1,5 @@
-defmodule PhoenixBase.Email do
-  use Bamboo.Phoenix, view: PhoenixBase.EmailView
+defmodule PhoenixBase.Email.UserEmail do
+  use Bamboo.Phoenix, view: PhoenixBase.Email.UserView
 
   alias PhoenixBase.UserStore
 

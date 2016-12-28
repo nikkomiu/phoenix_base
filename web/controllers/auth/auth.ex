@@ -2,7 +2,7 @@ defmodule PhoenixBase.Auth.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Guardian.Plug, only: [sign_in: 2]
 
-  alias PhoenixBase.Email
+  alias PhoenixBase.Email.UserEmail
   alias PhoenixBase.Mailer
   alias PhoenixBase.Repo
   alias PhoenixBase.User
@@ -111,7 +111,7 @@ defmodule PhoenixBase.Auth.Auth do
   defp send_reset_password_email_async(conn, user_login) do
     Task.async fn ->
       conn
-      |> Email.user_reset_password_email(user_login.user_id)
+      |> UserEmail.user_reset_password_email(user_login.user_id)
       |> Mailer.deliver_now
 
       user_login
@@ -123,7 +123,7 @@ defmodule PhoenixBase.Auth.Auth do
   defp send_lock_out_email_async(conn, user_id) do
     Task.async fn ->
       conn
-      |> Email.user_locked_out_email(user_id)
+      |> UserEmail.user_locked_out_email(user_id)
       |> Mailer.deliver_now
     end
   end

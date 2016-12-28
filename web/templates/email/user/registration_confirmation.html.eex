@@ -2,6 +2,6 @@
 
 <p>Please click the following button to confirm your account and set your password:</p>
 
-<%= render PhoenixBase.EmailView, "_button.html",
+<%= render PhoenixBase.Email.UserView, "_button.html",
       href: registration_url(@conn, :complete_registration, %{token: @user.confirmation_token}),
       text: "Complete registration" %>
