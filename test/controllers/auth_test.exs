@@ -2,7 +2,7 @@ defmodule PhoenixBase.AuthTest do
   use PhoenixBase.ConnCase
   use Bamboo.Test, shared: true
 
-  alias PhoenixBase.Auth
+  alias PhoenixBase.Auth.Auth
   alias PhoenixBase.TestHelpers
 
   setup %{conn: conn} do

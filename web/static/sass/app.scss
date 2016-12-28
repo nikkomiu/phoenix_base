@@ -60,3 +60,8 @@ main[role=main] {
     color: white;
   }
 }
+
+.btn.btn-outline-primary:hover {
+  background-color: $brand-primary-lighter;
+  color: $brand-primary;
+}

@@ -1,9 +1,9 @@
-defmodule PhoenixBase.SessionController do
+defmodule PhoenixBase.Auth.SessionController do
   use PhoenixBase.Web, :controller
 
   import Guardian.Plug, only: [sign_out: 1]
 
-  alias PhoenixBase.Auth
+  alias PhoenixBase.Auth.Auth
 
   def new(conn, _params) do
     render conn, "new.html"

@@ -1,4 +1,4 @@
-defmodule PhoenixBase.RegistrationController do
+defmodule PhoenixBase.Auth.RegistrationController do
   use PhoenixBase.Web, :controller
 
   alias PhoenixBase.Email

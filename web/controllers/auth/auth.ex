@@ -1,4 +1,4 @@
-defmodule PhoenixBase.Auth do
+defmodule PhoenixBase.Auth.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Guardian.Plug, only: [sign_in: 2]
 
@@ -25,10 +25,8 @@ defmodule PhoenixBase.Auth do
           |> Plug.Conn.configure_session(renew: true)
 
         {:ok, conn}
-      {:error, reason, task} ->
-        {:error, reason, task}
-      {:error, reason} ->
-        {:error, reason}
+      data ->
+        data
     end
   end
 

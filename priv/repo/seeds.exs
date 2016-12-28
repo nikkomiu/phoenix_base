@@ -1,15 +1,11 @@
 # Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
+#   mix run priv/repo/seeds.exs
 #
 # Inside the script, you can read and write to any of your
 # repositories directly:
-#
-#     PhoenixBase.Repo.insert!(%PhoenixBase.SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+#   PhoenixBase.Repo.insert!(%PhoenixBase.SomeModel{})
 
+alias Ecto.Changeset
 alias PhoenixBase.Repo
 alias PhoenixBase.User
 alias PhoenixBase.UserLogin
@@ -17,20 +13,16 @@ alias PhoenixBase.UserLogin
 defmodule SeedHelpers do
   import Ecto.Query
 
-  def find_or_create(klass, field, %Ecto.Changeset{valid?: _} = changeset) do
-    q =
-      from x in klass,
-        where: field(x, ^field) == ^Ecto.Changeset.get_field(changeset, field, nil)
-
-    find_or_create(q, changeset)
+  def find_or_create(klass, field, %Changeset{} = changeset) do
+    (from x in klass,
+      where: field(x, ^field) == ^Changeset.get_field(changeset, field, nil))
+    |> find_or_create(changeset)
   end
 
   def find_or_create(klass, field, model) do
-    q =
-      from x in klass,
-        where: field(x, ^field) == ^Map.get(model, field)
-
-    find_or_create(q, model)
+    (from x in klass,
+      where: field(x, ^field) == ^Map.get(model, field))
+    |> find_or_create(model)
   end
 
   defp find_or_create(query, changeset) do
@@ -48,7 +40,7 @@ user = SeedHelpers.find_or_create(User, :username,
 
 SeedHelpers.find_or_create(UserLogin, :user_id,
   UserLogin.registration_changeset(%UserLogin{user_id: user.id}, %{
-    password: "Password1",
-    password_confirmation: "Password1",
+    password: "P@ssword1",
+    password_confirmation: "P@ssword1",
   })
 )

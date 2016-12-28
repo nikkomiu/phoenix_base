@@ -31,6 +31,28 @@ defmodule PhoenixBase.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :about
+  end
+
+  # Unauthenticated
+  scope "/", PhoenixBase do
+    pipe_through [:browser, :browser_no_auth]
+  end
+
+  # Authenticated
+  scope "/", PhoenixBase do
+    pipe_through [:browser, :browser_auth]
+
+    get "/u", UserController, :index
+    get "/u/:username", UserController, :show
+  end
+
+  #
+  # Auth Logic
+  #
+
+  # Authenticated or Unauthenticated
+  scope "/", PhoenixBase.Auth do
+    pipe_through [:browser]
 
     get "/login/forgot", UnlockController, :forgot_password
     post "/login/forgot", UnlockController, :forgot_password_submit
@@ -42,7 +64,7 @@ defmodule PhoenixBase.Router do
   end
 
   # Unauthenticated
-  scope "/", PhoenixBase do
+  scope "/", PhoenixBase.Auth do
     pipe_through [:browser, :browser_no_auth]
 
     get "/login", SessionController, :new
@@ -55,13 +77,10 @@ defmodule PhoenixBase.Router do
   end
 
   # Authenticated
-  scope "/", PhoenixBase do
+  scope "/", PhoenixBase.Auth do
     pipe_through [:browser, :browser_auth]
 
     get "/logout", SessionController, :delete
-
-    get "/u", UserController, :index
-    get "/u/:username", UserController, :show
 
     get "/settings", AccountSettingsController, :index
     get "/settings/profile", AccountSettingsController, :profile

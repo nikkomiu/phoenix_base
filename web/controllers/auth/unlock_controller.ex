@@ -1,7 +1,7 @@
-defmodule PhoenixBase.UnlockController do
+defmodule PhoenixBase.Auth.UnlockController do
   use PhoenixBase.Web, :controller
 
-  alias PhoenixBase.Auth
+  alias PhoenixBase.Auth.Auth
 
   def forgot_password(conn, _params) do
     conn

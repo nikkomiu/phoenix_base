@@ -2,8 +2,6 @@ defmodule PhoenixBase.SessionControllerTest do
   use PhoenixBase.ConnCase
   use Bamboo.Test, shared: true
 
-  alias PhoenixBase.TestHelpers
-
   setup %{conn: conn} do
     conn =
       conn

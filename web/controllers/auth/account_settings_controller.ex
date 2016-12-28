@@ -1,4 +1,4 @@
-defmodule PhoenixBase.AccountSettingsController do
+defmodule PhoenixBase.Auth.AccountSettingsController do
   use PhoenixBase.Web, :controller
 
   alias PhoenixBase.User
