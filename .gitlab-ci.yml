@@ -91,6 +91,7 @@ releasearaptor:
   stage: release
   before_script:
     - MIX_ENV=prod
+    - RELX_REPLACE_OS_VARS=true
   script:
     - npm install
     - npm run deploy
