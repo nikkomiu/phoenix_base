@@ -5,7 +5,7 @@ config :phoenix_base, PhoenixBase.Endpoint,
   url: [scheme: "http", host: "localhost", port: 8080],
 #  force_ssl: [rewrite_on: [:x_forwarded_proto]],
 #  secret_key_base: {:system, "SECRET_KEY_BASE"},
-  secret_key_base: System.get_env("SECRET_KEY_BASE") || "${SECRET_KEY_BASE}"
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "${SECRET_KEY_BASE}",
   cache_static_manifest: "priv/static/manifest.json"
 
 config :phoenix_base, PhoenixBase.Repo,
