@@ -91,13 +91,12 @@ releasearaptor:
   stage: release
   before_script:
     - MIX_ENV=prod
-    - RELX_REPLACE_OS_VARS=true
   script:
     - npm install
     - npm run deploy
     - mix deps.get --only prod
     - mix compile
-    - mix release --env=prod
+    - RELX_REPLACE_OS_VARS=true mix release --env=prod
   artifacts:
     name: $CI_PROJECT_NAME
     paths:
