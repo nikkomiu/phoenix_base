@@ -10,8 +10,7 @@ config :phoenix_base, PhoenixBase.Endpoint,
 
 config :phoenix_base, PhoenixBase.Repo,
   adapter: Ecto.Adapters.Postgres,
-#  url: {:system, "DATABASE_URL"},
-  url: System.get_env("DATABASE_URL") || "${DATABASE_URL}",
+  url: {:system, "DATABASE_URL"},
   pool_size: 15
 
 # Do not print debug messages in production
