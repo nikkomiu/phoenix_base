@@ -59,33 +59,6 @@ test_coverage:
   script:
     - mix coveralls
 
-migratability:
-  stage: test
-  dependencies:
-    - compile
-  services:
-    - postgres:latest
-  before_script:
-    - chmod +x deploy/db_migratable.sh
-  script:
-    - deploy/db_migratable.sh
-  except:
-    - tags
-  allow_failure: true
-
-mergability:
-  stage: test
-  image: debian:jessie
-  before_script:
-    - apt-get update && apt-get install -y git
-    - git config --global user.email "admin@nikkomiu.com"
-    - git config --global user.name "CI"
-  script:
-    - git checkout master
-    - git merge $CI_BUILD_REF
-  only:
-    - develop
-
 # RELEASE STAGE
 releasearaptor:
   stage: release
